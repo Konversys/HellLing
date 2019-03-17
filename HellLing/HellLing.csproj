@@ -43,11 +43,21 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Core\Scanner.cs" />
+    <Compile Include="External\FileControl.cs" />
+    <Compile Include="Model\Classes\Position.cs" />
+    <Compile Include="Model\Enums\Lexem.cs" />
+    <Compile Include="Model\Classes\Token.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup />
+  <ItemGroup>
+    <Content Include="Data\input.txt" />
+    <Content Include="Data\output.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
