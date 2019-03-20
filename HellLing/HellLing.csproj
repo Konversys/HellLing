@@ -43,11 +43,15 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Core\Analyzer.cs" />
     <Compile Include="Core\Scanner.cs" />
     <Compile Include="External\FileControl.cs" />
+    <Compile Include="Model\Classes\Errors.cs" />
+    <Compile Include="Model\Classes\Exception.cs" />
     <Compile Include="Model\Classes\Position.cs" />
     <Compile Include="Model\Enums\Lexem.cs" />
     <Compile Include="Model\Classes\Token.cs" />
+    <Compile Include="Model\FC.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

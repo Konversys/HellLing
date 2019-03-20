@@ -3,6 +3,7 @@ using HellLing.External;
 using HellLing.Model.Classes;
 using System;
 using System.Collections.Generic;
+using Exception = HellLing.Model.Classes.Exception;
 
 namespace HellLing
 {

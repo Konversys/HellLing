@@ -8,6 +8,9 @@ using System.Threading.Tasks;
 
 namespace HellLing.Core
 {
+    // FIXIT: Комментарии ошибка вплотную к другому символу кроме TIgn
+    // Example: {//comment
+
     /// <summary>
     /// Лексический сканер. Считывает лексемы
     /// </summary>
@@ -36,7 +39,7 @@ namespace HellLing.Core
 
         static List<Token> Parse(string text, bool isTakeIng = false)
         {
-            text = text.Replace("\r", "").Replace("\n", "");
+            text = text.Replace("\r", "");
             int start = 0;
             int end;
             report = new List<Token>();
@@ -76,7 +79,7 @@ namespace HellLing.Core
                     if (!isTakeIng)
                     {
                         report.Insert(0, new Token(Lexem.TSOF, new Position(start, end), text));
-                        return report.Where(x => x.Lexem != Lexem.TIgn).ToList();
+                        return report.Where(x => x.Lexem != Lexem.TIgn && x.Lexem != Lexem.TCom).ToList();
                     }
                     report.Insert(0, new Token(Lexem.TSOF, new Position(start, end), text));
                     return report;
@@ -139,7 +142,7 @@ namespace HellLing.Core
             }
             if (!isTakeIng)
             {
-                return report.Where(x => x.Lexem != Lexem.TIgn).ToList();
+                return report.Where(x => x.Lexem != Lexem.TIgn && x.Lexem != Lexem.TCom).ToList();
             }
             return report;
         }

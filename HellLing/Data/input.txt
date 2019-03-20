@@ -1,6 +1,9 @@
 int f = '0';
+//adsf 
+//asdf ff 4.5
 int main()
-{
+{ //asdf
+//asdf
 	for(i=0; i < 10; i++)
 	{
 		g[i] = i+1;
