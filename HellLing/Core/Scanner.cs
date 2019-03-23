@@ -352,7 +352,7 @@ namespace HellLing.Core
             }
             else if (ch == '\'' && key == -2)
             {
-                return D(Lexem.TChar);
+                return D(Lexem.TConstChar);
             }
             else if (ch == '\'' && key == 0)
             {

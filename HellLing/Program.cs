@@ -14,6 +14,8 @@ namespace HellLing
             string text = FileControl.Read();
             List<Token> tokens = Scanner.Scan(text, false);
             Console.WriteLine(GetStringScanner(tokens));
+            Errors errors = Analyzer.Start(tokens);
+            Console.WriteLine(GetStringAnalyzer(errors));
             Console.ReadKey();
         }
         static string GetStringScanner(List<Token> tokens)
@@ -28,16 +30,16 @@ namespace HellLing
             FileControl.Write(result);
             return result;
         }
-        static string GetStringAnalyzer(List<Exception> tokens)
+        static string GetStringAnalyzer(Errors errors)
         {
-            if (tokens.Count == 0)
+            if (errors.GetErrors().Count == 0)
             {
                 return "\n====================  Ошибок нет  ====================\n";
             }
             string result = "";
-            foreach (var item in tokens)
+            foreach (var item in errors.GetErrors())
             {
-                result += String.Format("{0}\n", item.ToString());
+                result += String.Format("{0}\n", item);
             }
             result += "\n======================================================\n";
             return result;

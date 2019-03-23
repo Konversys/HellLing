@@ -15,11 +15,11 @@ namespace HellLing.Core
         /// <summary>
         /// Список ошибок
         /// </summary>
-        static Errors errors { get; set; }
+        public static Errors errors { get; private set; }
         /// <summary>
         /// Список лексем
         /// </summary>
-        static List<Token> Tokens { get; set; }
+        public static List<Token> Tokens { get; set; }
         /// <summary>
         /// Каретка
         /// </summary>
@@ -59,17 +59,21 @@ namespace HellLing.Core
 
         static void Program()
         {
-            if (FC.Method(car))
+            while (!First(Lexem.TEOF))
             {
-                Method();
-            }
-            else if (FC.GlobalVar(car))
-            {
-                GlobalVar();
-            }
-            else
-            {
-                errors.Add(GetToken(), car, "Ожидались глобальные переменные или метод");
+                if (FC.Method3(car))
+                {
+                    Method();
+                }
+                else if (FC.GlobalVar0(car))
+                {
+                    GlobalVar();
+                }
+                else
+                {
+                    errors.Add(GetToken(), car, $"{System.Reflection.MethodBase.GetCurrentMethod().Name} Ожидались глобальные переменные или метод");
+                    ShiftToken();
+                }
             }
         }
         static void Method()
@@ -82,23 +86,23 @@ namespace HellLing.Core
         }
         static void GlobalVar()
         {
-            while (FC.VarDeclar(car) || FC.VarAssign(car) || FC.ArrAssign(car))
+            while ((FC.VarDeclar2(car) || FC.VarAssign2(car) || FC.ArrAssign5(car)) && !FC.Method3(car))
             {
-                if (FC.VarDeclar(car))
+                if (FC.VarDeclar2(car))
                 {
                     VarList();
                 }
-                else if (FC.VarAssign(car))
+                else if (FC.VarAssign2(car))
                 {
                     VarAssign();
                 }
-                else if (FC.ArrAssign(car))
+                else if (FC.ArrAssign5(car))
                 {
                     ArrAssign();
                 }
                 else
                 {
-                    errors.Add(GetToken(), car, "Ожидалась операция с переменными и массивами");
+                    errors.Add(GetToken(), car, $"{System.Reflection.MethodBase.GetCurrentMethod().Name}: Ожидалась операция с переменными и массивами");
                 }
 
                 if (First(Lexem.TTZpt))
@@ -107,7 +111,7 @@ namespace HellLing.Core
                 }
                 else
                 {
-                    errors.Add(GetToken(), car, "Требуется ;");
+                    errors.Add(GetToken(), car, $"{System.Reflection.MethodBase.GetCurrentMethod().Name}: Требуется ;");
                     ShiftToken();
                 }
             }
@@ -118,7 +122,7 @@ namespace HellLing.Core
             do
             {
                 ShiftToken(1);
-                if (FC.VarAssign(car))
+                if (FC.VarAssign2(car))
                 {
                     VarAssign();
                 }
@@ -132,18 +136,18 @@ namespace HellLing.Core
                     }
                     else
                     {
-                        errors.Add(GetToken(), car, "Требуется ]");
+                        errors.Add(GetToken(), car, $"{System.Reflection.MethodBase.GetCurrentMethod().Name}: Требуется ]");
                         ShiftToken();
                     }
                     ShiftToken();
                 }
-                else if (First(Lexem.TID, Lexem.TZpt))
+                else if (First(Lexem.TID))
                 {
                     ShiftToken();
                 }
                 else
                 {
-                    errors.Add(GetToken(), car, "Требуется ID");
+                    errors.Add(GetToken(), car, $"{System.Reflection.MethodBase.GetCurrentMethod().Name}: Требуется ID");
                     ShiftToken();
                 }
             } while (First(Lexem.TZpt));
@@ -151,21 +155,21 @@ namespace HellLing.Core
 
         static void VarAssign()
         {
-            if (FC.VarAssign(car))
+            if (FC.VarAssign2(car))
             {
                 ShiftToken(2);
                 Expression();
             }
             else
             {
-                errors.Add(GetToken(), car, "Ожидалось присвоение переменной");
+                errors.Add(GetToken(), car, $"{System.Reflection.MethodBase.GetCurrentMethod().Name}: Ожидалось присвоение переменной");
                 ShiftToken();
             }
         }
 
         static void ArrAssign()
         {
-            if (FC.ArrAssign(car))
+            if (FC.ArrAssign5(car))
             {
                 ShiftToken(2);
                 Expression();
@@ -175,7 +179,7 @@ namespace HellLing.Core
                 }
                 else
                 {
-                    errors.Add(GetToken(), car, "Ожидалось ]");
+                    errors.Add(GetToken(), car, $"{System.Reflection.MethodBase.GetCurrentMethod().Name}: Ожидалось ]");
                     ShiftToken();
                 }
                 if (First(Lexem.TSave))
@@ -184,30 +188,31 @@ namespace HellLing.Core
                 }
                 else
                 {
-                    errors.Add(GetToken(), car, "Ожидалось =");
+                    errors.Add(GetToken(), car, $"{System.Reflection.MethodBase.GetCurrentMethod().Name}: Ожидалось =");
                     ShiftToken();
                 }
+                Expression();
             }
         }
 
         static void VarDeclar()
         {
-            if (FC.VarDeclar(car))
+            if (FC.VarDeclar2(car))
             {
-                
+                ShiftToken(2);
             }
             else
             {
-                errors.Add(GetToken(), car, "Ожидался тип данных");
+                errors.Add(GetToken(), car, $"{System.Reflection.MethodBase.GetCurrentMethod().Name}: Ожидался тип данных");
+                ShiftToken();
             }
-            ShiftToken(2);
         }
 
         static void ArgDeclar()
         {
             do
             {
-                if (FC.VarDeclar(car))
+                if (FC.VarDeclar2(car))
                 {
                     ShiftToken(2);
                     if (First(Lexem.TCLS))
@@ -225,42 +230,105 @@ namespace HellLing.Core
 
         static void MethodBlock()
         {
-            if (FC.ArrAssign(car))
+            do
             {
-                ShiftToken(5);
-                Expression();
-            }
-            else if (FC.MethodCall(car))
-            {
-                MethodCall();
-            }
-            else if (FC.For(car))
-            {
-                For();
-            }
-            else if (FC.VarDeclar(car))
-            {
-                VarList();
-            }
-            else if (First(Lexem._return))
-            {
-                ShiftToken();
-                Expression();
-            }
+                if (FC.MethodCall2(car))
+                {
+                    MethodCall();
+                    if (First(Lexem.TTZpt))
+                    {
+                        ShiftToken();
+                    }
+                }
+                else if (FC.For1(car))
+                {
+                    For();
+                    if (First(Lexem.TFRS))
+                    {
+                        break;
+                    }
+                }
+                else if (FC.ArrAssign5(car))
+                {
+                    ArrAssign();
+                    if (First(Lexem.TTZpt))
+                    {
+                        ShiftToken();
+                    }
+                }
+                else if (FC.VarDeclar2(car))
+                {
+                    VarList();
+                    if (First(Lexem.TTZpt))
+                    {
+                        ShiftToken();
+                    }
+                }
+                else if (FC.Inc2(car))
+                {
+                    Inc();
+                    if (First(Lexem.TTZpt))
+                    {
+                        ShiftToken();
+                    }
+                }
+                else if (FC.Dec2(car))
+                {
+                    Dec();
+                    if (First(Lexem.TTZpt))
+                    {
+                        ShiftToken();
+                    }
+                }
+                else if (First(Lexem._int) || First(Lexem._double))
+                {
+                    VarList();
+                    if (First(Lexem.TTZpt))
+                    {
+                        ShiftToken();
+                    }
+                }
+                else if (First(Lexem._return))
+                {
+                    ShiftToken();
+                    Expression();
+                    if (First(Lexem.TTZpt))
+                    {
+                        ShiftToken();
+                    }
+                }
+                else if (FC.VarAssign2(car))
+                {
+                    VarAssign();
+                    if (First(Lexem.TTZpt))
+                    {
+                        ShiftToken();
+                    }
+                }
+            } while (FC.MethodCall2(car) || FC.For1(car) || FC.ArrAssign5(car) || FC.Inc2(car) || FC.Dec2(car) ||
+                    First(Lexem._int) || First(Lexem._double) || First(Lexem._return) || FC.VarAssign2(car));
         }
 
         static void MethodCall()
         {
-            if (FC.MethodCall(car))
+            if (FC.MethodCall2(car))
             {
                 ShiftToken(2);
                 do
                 {
+                    if (First(Lexem.TRS))
+                    {
+                        break;
+                    }
                     Expression();
                 } while (First(Lexem.TZpt) && ShiftToken());
                 if (First(Lexem.TRS))
                 {
                     ShiftToken();
+                }
+                else
+                {
+                    errors.Add(GetToken(), car, $"{System.Reflection.MethodBase.GetCurrentMethod().Name}: Требуется )");
                 }
             }
         }
@@ -275,7 +343,7 @@ namespace HellLing.Core
             {
                 ShiftToken();
             }
-            if (FC.VarAssign(car))
+            if (FC.VarAssign2(car))
             {
                 VarAssign();
             }
@@ -283,12 +351,28 @@ namespace HellLing.Core
             {
                 ShiftToken();
             }
+            else
+            {
+                errors.Add(GetToken(), car, $"{System.Reflection.MethodBase.GetCurrentMethod().Name}: Требуется ;");
+                ShiftToken();
+            }
             Expression();
             if (First(Lexem.TTZpt))
             {
                 ShiftToken();
             }
-            VarAssign();
+            if (FC.VarAssign2(car))
+            {
+                VarAssign();
+            }
+            else if (FC.Inc2(car))
+            {
+                Inc();
+            }
+            else if (FC.Dec2(car))
+            {
+                Dec();
+            }
             if (First(Lexem.TRS, Lexem.TFLS))
             {
                 ShiftToken(2);
@@ -302,7 +386,7 @@ namespace HellLing.Core
 
         static void Inc()
         {
-            if (FC.Inc(car))
+            if (FC.Inc2(car))
             {
                 ShiftToken(2);
             }
@@ -310,7 +394,7 @@ namespace HellLing.Core
 
         static void Dec()
         {
-            if (FC.Dec(car))
+            if (FC.Dec2(car))
             {
                 ShiftToken(2);
             }
@@ -348,38 +432,56 @@ namespace HellLing.Core
                 ShiftToken();
                 Expression();
             }
-            else if (First(Lexem.TInc))
+            else if (First(Lexem.TID, Lexem.TCLS))
+            {
+                ShiftToken(2);
+                Expression();
+                if (First(Lexem.TCRS))
+                {
+                    ShiftToken();
+                }
+                else
+                {
+                    errors.Add(GetToken(), car, $"{System.Reflection.MethodBase.GetCurrentMethod().Name}: Требуется ]");
+                    ShiftToken();
+                }
+            }
+            else if (FC.Inc2(car))
             {
                 Inc();
             }
-            else if (First(Lexem.TDec))
+            else if (FC.Inc2(car))
             {
                 Dec();
             }
             else if (First(Lexem.TConstInt))
             {
-
+                ShiftToken();
             }
             else if (First(Lexem.TConstDouble))
             {
-
+                ShiftToken();
             }
             else if (First(Lexem.TConstChar))
             {
-
+                ShiftToken();
             }
-            else if (FC.MethodCall(car))
+            else if (First(Lexem.TID))
+            {
+                ShiftToken();
+            }
+            else if (FC.MethodCall2(car))
             {
                 MethodCall();
             }
             else
             {
-                errors.Add(GetToken(), car, "Ожидалось элементарное выражение");
+                errors.Add(GetToken(), car, $"{System.Reflection.MethodBase.GetCurrentMethod().Name}: Ожидалось элементарное выражение");
                 ShiftToken();
             }
         }
 
-        #region
+        #region Operation
         static bool First(Lexem lexem1, Lexem lexem2 = Lexem.TError, Lexem lexem3 = Lexem.TError, Lexem lexem4 = Lexem.TError)
         {
             if (lexem4 == Lexem.TError)

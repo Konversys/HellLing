@@ -10,7 +10,7 @@ namespace HellLing.Model
 {
     class FC
     {
-        public static bool Method(int car)
+        public static bool Method3(int car)
         {
             Car = car;
             if (First(Lexem._int) || First(Lexem._double) || First(Lexem._void))
@@ -22,7 +22,7 @@ namespace HellLing.Model
             }
             return false;
         }
-        public static bool VarAssign(int car)
+        public static bool VarAssign2(int car)
         {
             Car = car;
             if (First(Lexem.TID, Lexem.TSave) && GetToken(3) != null)
@@ -31,17 +31,17 @@ namespace HellLing.Model
             }
             return false;
         }
-        public static bool ArrAssign(int car)
+        public static bool ArrAssign5(int car)
         {
             Car = car;
-            if (First(Lexem.TID, Lexem.TCLS, Lexem.TConstInt) && First(Lexem.TID, Lexem.TCLS, Lexem.TID) &&
+            if (First(Lexem.TID, Lexem.TCLS, Lexem.TConstInt) || First(Lexem.TID, Lexem.TCLS, Lexem.TID) &&
                 FTok(Lexem.TCRS, 4) && FTok(Lexem.TSave, 5) && GetToken(6) != null)
             {
                 return true;
             }
             return false;
         }
-        public static bool VarDeclar(int car)
+        public static bool VarDeclar2(int car)
         {
             Car = car;
             if ((First(Lexem._int) || First(Lexem._double)) && FTok(Lexem.TID, 2))
@@ -50,7 +50,7 @@ namespace HellLing.Model
             }
             return false;
         }
-        public static bool MethodCall(int car)
+        public static bool MethodCall2(int car)
         {
             Car = car;
             if (First(Lexem.TID, Lexem.TLS))
@@ -60,16 +60,16 @@ namespace HellLing.Model
             return false;
 
         }
-        public static bool GlobalVar(int car)
+        public static bool GlobalVar0(int car)
         {
-            if (VarAssign(car) || ArrAssign(car) || VarDeclar(car))
+            if (VarAssign2(car) || ArrAssign5(car) || VarDeclar2(car))
             {
                 return true;
             }
             return false;
 
         }
-        public static bool For(int car)
+        public static bool For1(int car)
         {
             Car = car;
             if (First(Lexem._for))
@@ -78,7 +78,7 @@ namespace HellLing.Model
             }
             return false;
         }
-        public static bool Inc(int car)
+        public static bool Inc2(int car)
         {
             Car = car;
             if (First(Lexem.TInc, Lexem.TID) || First(Lexem.TID, Lexem.TInc))
@@ -87,7 +87,7 @@ namespace HellLing.Model
             }
             return false;
         }
-        public static bool Dec(int car)
+        public static bool Dec2(int car)
         {
             Car = car;
             if (First(Lexem.TDec, Lexem.TID) || First(Lexem.TID, Lexem.TDec))
