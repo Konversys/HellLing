@@ -49,9 +49,13 @@
     <Compile Include="Model\Classes\Errors.cs" />
     <Compile Include="Model\Classes\Exception.cs" />
     <Compile Include="Model\Classes\Position.cs" />
+    <Compile Include="Model\Enums\EElement.cs" />
+    <Compile Include="Model\Enums\EType.cs" />
     <Compile Include="Model\Enums\Lexem.cs" />
     <Compile Include="Model\Classes\Token.cs" />
     <Compile Include="Model\FC.cs" />
+    <Compile Include="Model\STree\Node.cs" />
+    <Compile Include="Model\STree\Tree.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

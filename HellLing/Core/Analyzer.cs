@@ -1,9 +1,11 @@
 ﻿using HellLing.Model;
 using HellLing.Model.Classes;
 using HellLing.Model.Enums;
+using HellLing.Model.STree;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using Exception = HellLing.Model.Classes.Exception;
@@ -12,6 +14,8 @@ namespace HellLing.Core
 {
     class Analyzer
     {
+        static Stack<Tree> save { get; set; }
+        public static Tree tree { get; private set; }
         /// <summary>
         /// Список ошибок
         /// </summary>
@@ -52,6 +56,8 @@ namespace HellLing.Core
             Tokens = tokens;
             car = 0;
             errors = new Errors();
+            tree = new Tree("program");
+            save = new Stack<Tree>();
             FC.SetData(tokens);
             Program();
             return errors;
@@ -79,9 +85,12 @@ namespace HellLing.Core
         static void Method()
         {
             ShiftToken(3);
+            AddFunc(-1);
+            save.Push(tree);
             ArgDeclar();
             ShiftToken(2);
             MethodBlock();
+            tree = save.Pop();
             ShiftToken();
         }
         static void GlobalVar()
@@ -124,11 +133,13 @@ namespace HellLing.Core
                 ShiftToken(1);
                 if (FC.VarAssign2(car))
                 {
+                    AddVar(1);
                     VarAssign();
                 }
                 else if (First(Lexem.TID, Lexem.TCLS))
                 {
                     ShiftToken(2);
+                    AddArray(-1);
                     Expression();
                     if (First(Lexem.TCRS))
                     {
@@ -144,6 +155,7 @@ namespace HellLing.Core
                 else if (First(Lexem.TID))
                 {
                     ShiftToken();
+                    AddVar();
                 }
                 else
                 {
@@ -217,12 +229,17 @@ namespace HellLing.Core
                     ShiftToken(2);
                     if (First(Lexem.TCLS))
                     {
+                        AddArray();
                         ShiftToken();
                         Expression();
                         if (First(Lexem.TCRS))
                         {
                             ShiftToken();
                         }
+                    }
+                    else
+                    {
+                        AddVar();
                     }
                 }
             } while (First(Lexem.TZpt) && ShiftToken());
@@ -304,6 +321,10 @@ namespace HellLing.Core
                     {
                         ShiftToken();
                     }
+                    else
+                    {
+                        errors.Add(GetToken(), car, $"{System.Reflection.MethodBase.GetCurrentMethod().Name}: Требуется ;");
+                    }
                 }
             } while (FC.MethodCall2(car) || FC.For1(car) || FC.ArrAssign5(car) || FC.Inc2(car) || FC.Dec2(car) ||
                     First(Lexem._int) || First(Lexem._double) || First(Lexem._return) || FC.VarAssign2(car));
@@ -339,6 +360,8 @@ namespace HellLing.Core
             {
                 ShiftToken(2);
             }
+            AddFor();
+            save.Push(tree);
             if (First(Lexem._int) || First(Lexem._double))
             {
                 ShiftToken();
@@ -378,6 +401,7 @@ namespace HellLing.Core
                 ShiftToken(2);
             }
             MethodBlock();
+            tree = save.Pop();
             if (First(Lexem.TFRS))
             {
                 ShiftToken();
@@ -512,6 +536,95 @@ namespace HellLing.Core
                 return true;
             }
             return false;
+        }
+        #endregion
+
+        #region Tree operation
+        public static bool AddFor()
+        {
+            tree.SetRight(Node.NewNone());
+            tree = tree.Right;
+            return true;
+        }
+
+        public static bool AddFunc(int shift = 0)
+        {
+            Token token = GetToken(shift);
+            if (tree.FindUpFunc(token) != null)
+            {
+                errors.Add(token, car, $"{MethodInfo.GetCurrentMethod().Name} - Функция {token.State} уже существует в этой области видимости");
+                return false;
+            }
+            else
+            {
+                switch (GetToken(shift - 1).Lexem)
+                {
+                    case Lexem._int:
+                        tree.SetRight(Node.NewFunction(token.State, EType.Int));
+                        break;
+                    case Lexem._double:
+                        tree.SetRight(Node.NewFunction(token.State, EType.Double));
+                        break;
+                    case Lexem._void:
+                        tree.SetRight(Node.NewFunction(token.State, EType.Void));
+                        break;
+                    default:
+                        return false;
+                }
+                tree = tree.Right;
+                return true;
+            }
+        }
+        public static bool AddVar(int shift = 0)
+        {
+            Token token = GetToken(shift);
+            if (tree.FindUpVar(token) != null || tree.FindUpArray(token) != null)
+            {
+                errors.Add(token, car, $"{MethodInfo.GetCurrentMethod().Name} - Переменная {token.State} уже существует в этой области видимости");
+                return false;
+            }
+            else
+            {
+                switch (GetToken(shift - 1).Lexem)
+                {
+                    case Lexem._int:
+                        tree.SetLeft(Node.NewVar(token.State, EType.Int));
+                        break;
+                    case Lexem._double:
+                        tree.SetLeft(Node.NewVar(token.State, EType.Double));
+                        break;
+                    default:
+                        return false;
+                }
+                tree = tree.Left;
+                return true;
+            }
+        }
+        public static bool AddArray(int shift = 0)
+        {
+            Token token = GetToken(shift);
+            int lenght = int.Parse(GetToken(shift + 2).Title);
+            if (tree.FindUpVar(token) != null || tree.FindUpArray(token) != null)
+            {
+                errors.Add(token, car, $"{MethodInfo.GetCurrentMethod().Name} - Массив {token.State} уже существует в этой области видимости");
+                return false;
+            }
+            else
+            {
+                switch (GetToken(shift-1).Lexem)
+                {
+                    case Lexem._int:
+                        tree.SetLeft(Node.NewArray(token.State, EType.Int, lenght, false));
+                        break;
+                    case Lexem._double:
+                        tree.SetLeft(Node.NewArray(token.State, EType.Double, lenght, false));
+                        break;
+                    default:
+                        return false;
+                }
+                tree = tree.Left;
+                return true;
+            }
         }
         #endregion
     }

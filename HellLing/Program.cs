@@ -1,6 +1,7 @@
 ﻿using HellLing.Core;
 using HellLing.External;
 using HellLing.Model.Classes;
+using HellLing.Model.STree;
 using System;
 using System.Collections.Generic;
 using Exception = HellLing.Model.Classes.Exception;
@@ -16,6 +17,7 @@ namespace HellLing
             Console.WriteLine(GetStringScanner(tokens));
             Errors errors = Analyzer.Start(tokens);
             Console.WriteLine(GetStringAnalyzer(errors));
+            Tree tree = Analyzer.tree;
             Console.ReadKey();
         }
         static string GetStringScanner(List<Token> tokens)
