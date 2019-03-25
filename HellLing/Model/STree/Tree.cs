@@ -115,7 +115,12 @@ namespace HellLing.Model.STree
         }
         public bool ContainsFunc(Token token)
         {
-            if (FindUpFunc(token) == null)
+            Tree current = this;
+            while (current != null && !(current.Node.Title == token.State && current.Node.Element == EElement.Func))
+            {
+                current = current.Up;
+            }
+            if (current == null)
             {
                 return false;
             }
@@ -128,6 +133,64 @@ namespace HellLing.Model.STree
                 return false;
             }
             return true;
+        }
+
+        public EType GetTypeVar(Token token)
+        {
+            Tree current = this;
+            while (current != null && !(current.Node.Title == token.State && current.Node.Element == EElement.Var))
+            {
+                current = current.Up;
+            }
+            if (current == null)
+            {
+                return EType._null;
+            }
+            return current.Node.Type;
+        }
+        public EType GetTypeArray(Token token)
+        {
+            Tree current = this;
+            while (current != null && !(current.Node.Title == token.State && current.Node.Element == EElement.Array))
+            {
+                current = current.Up;
+            }
+            if (current == null)
+            {
+                return EType._null;
+            }
+            return current.Node.Type;
+        }
+        public EType GetTypeFunc(Token token)
+        {
+            Tree current = this;
+            while (current != null && !(current.Node.Element == EElement.Func))
+            {
+                current = current.Up;
+            }
+            while (current != null && !(current.Node.Title == token.State && current.Node.Element == EElement.Func))
+            {
+                current = current.Right;
+            }
+            if (current == null)
+            {
+                return EType._null;
+            }
+            return current.Node.Type;
+        }
+
+        public EType GetThisFunc(Token token)
+        {
+            Tree current = this;
+            while (current != null && !(current.Node.Element == EElement.Func))
+            {
+                current = current.Up;
+            }
+            if (current == null)
+            {
+                return EType._null;
+            }
+            return current.Node.Type;
         }
     }
 }

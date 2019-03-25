@@ -31,6 +31,13 @@ namespace HellLing.Model.Classes
             Lexem = lexem;
             Position = position;
         }
+        public Token(Lexem lexem, Position position, string text, int code)
+        {
+            State = text;
+            Lexem = lexem;
+            Position = position;
+            Code = code;
+        }
         public void Set(Lexem lexem, Position position, string text)
         {
             State = text.Substring(position.Start, position.End - position.Start);

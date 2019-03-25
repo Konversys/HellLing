@@ -140,7 +140,15 @@ namespace HellLing.Core
                 {
                     ShiftToken(2);
                     AddArray(-1);
-                    Expression();
+                    if (First(Lexem.TConstInt) || First(Lexem.TID))
+                    {
+                        ShiftToken();
+                    }
+                    else
+                    {
+                        errors.Add(GetToken(), car, $"{System.Reflection.MethodBase.GetCurrentMethod().Name}: Ожидался тип int");
+                        ShiftToken();
+                    }
                     if (First(Lexem.TCRS))
                     {
                         ShiftToken();
@@ -150,7 +158,6 @@ namespace HellLing.Core
                         errors.Add(GetToken(), car, $"{System.Reflection.MethodBase.GetCurrentMethod().Name}: Требуется ]");
                         ShiftToken();
                     }
-                    ShiftToken();
                 }
                 else if (First(Lexem.TID))
                 {
@@ -169,6 +176,10 @@ namespace HellLing.Core
         {
             if (FC.VarAssign2(car))
             {
+                if (!tree.ContainsVar(GetToken(1)))
+                {
+                    errors.Add(GetToken(1), car, $"{System.Reflection.MethodBase.GetCurrentMethod().Name}: Переменная не объявлена");
+                }
                 ShiftToken(2);
                 Expression();
             }
@@ -183,8 +194,20 @@ namespace HellLing.Core
         {
             if (FC.ArrAssign5(car))
             {
+                if (!tree.ContainsArray(GetToken(1)))
+                {
+                    errors.Add(GetToken(1), car, $"{System.Reflection.MethodBase.GetCurrentMethod().Name}: Массив не объявлен");
+                }
                 ShiftToken(2);
-                Expression();
+                if (First(Lexem.TConstInt) || First(Lexem.TID))
+                {
+                    ShiftToken();
+                }
+                else
+                {
+                    errors.Add(GetToken(), car, $"{System.Reflection.MethodBase.GetCurrentMethod().Name}: Ожидался тип int");
+                    ShiftToken();
+                }
                 if (First(Lexem.TCRS))
                 {
                     ShiftToken();
@@ -212,6 +235,7 @@ namespace HellLing.Core
             if (FC.VarDeclar2(car))
             {
                 ShiftToken(2);
+                AddVar();
             }
             else
             {
@@ -231,9 +255,22 @@ namespace HellLing.Core
                     {
                         AddArray();
                         ShiftToken();
-                        Expression();
+                        if (First(Lexem.TConstInt) || First(Lexem.TID))
+                        {
+                            ShiftToken();
+                        }
+                        else
+                        {
+                            errors.Add(GetToken(), car, $"{System.Reflection.MethodBase.GetCurrentMethod().Name}: Ожидался тип int");
+                            ShiftToken();
+                        }
                         if (First(Lexem.TCRS))
                         {
+                            ShiftToken();
+                        }
+                        else
+                        {
+                            errors.Add(GetToken(), car, $"{System.Reflection.MethodBase.GetCurrentMethod().Name}: Ожидалось ]");
                             ShiftToken();
                         }
                     }
@@ -256,6 +293,10 @@ namespace HellLing.Core
                     {
                         ShiftToken();
                     }
+                    else
+                    {
+                        errors.Add(GetToken(), car, $"{System.Reflection.MethodBase.GetCurrentMethod().Name}: Требуется ;");
+                    }
                 }
                 else if (FC.For1(car))
                 {
@@ -272,6 +313,10 @@ namespace HellLing.Core
                     {
                         ShiftToken();
                     }
+                    else
+                    {
+                        errors.Add(GetToken(), car, $"{System.Reflection.MethodBase.GetCurrentMethod().Name}: Требуется ;");
+                    }
                 }
                 else if (FC.VarDeclar2(car))
                 {
@@ -279,6 +324,10 @@ namespace HellLing.Core
                     if (First(Lexem.TTZpt))
                     {
                         ShiftToken();
+                    }
+                    else
+                    {
+                        errors.Add(GetToken(), car, $"{System.Reflection.MethodBase.GetCurrentMethod().Name}: Требуется ;");
                     }
                 }
                 else if (FC.Inc2(car))
@@ -288,6 +337,10 @@ namespace HellLing.Core
                     {
                         ShiftToken();
                     }
+                    else
+                    {
+                        errors.Add(GetToken(), car, $"{System.Reflection.MethodBase.GetCurrentMethod().Name}: Требуется ;");
+                    }
                 }
                 else if (FC.Dec2(car))
                 {
@@ -295,6 +348,10 @@ namespace HellLing.Core
                     if (First(Lexem.TTZpt))
                     {
                         ShiftToken();
+                    }
+                    else
+                    {
+                        errors.Add(GetToken(), car, $"{System.Reflection.MethodBase.GetCurrentMethod().Name}: Требуется ;");
                     }
                 }
                 else if (First(Lexem._int) || First(Lexem._double))
@@ -304,6 +361,10 @@ namespace HellLing.Core
                     {
                         ShiftToken();
                     }
+                    else
+                    {
+                        errors.Add(GetToken(), car, $"{System.Reflection.MethodBase.GetCurrentMethod().Name}: Требуется ;");
+                    }
                 }
                 else if (First(Lexem._return))
                 {
@@ -312,6 +373,10 @@ namespace HellLing.Core
                     if (First(Lexem.TTZpt))
                     {
                         ShiftToken();
+                    }
+                    else
+                    {
+                        errors.Add(GetToken(), car, $"{System.Reflection.MethodBase.GetCurrentMethod().Name}: Требуется ;");
                     }
                 }
                 else if (FC.VarAssign2(car))
@@ -330,10 +395,15 @@ namespace HellLing.Core
                     First(Lexem._int) || First(Lexem._double) || First(Lexem._return) || FC.VarAssign2(car));
         }
 
-        static void MethodCall()
+        static EType MethodCall()
         {
             if (FC.MethodCall2(car))
             {
+                EType type = tree.GetTypeFunc(GetToken(1));
+                if (!tree.ContainsFunc(GetToken(1)))
+                {
+                    errors.Add(GetToken(1), car, $"{System.Reflection.MethodBase.GetCurrentMethod().Name}: Функция не объявлена");
+                }
                 ShiftToken(2);
                 do
                 {
@@ -346,12 +416,14 @@ namespace HellLing.Core
                 if (First(Lexem.TRS))
                 {
                     ShiftToken();
+                    return type;
                 }
                 else
                 {
                     errors.Add(GetToken(), car, $"{System.Reflection.MethodBase.GetCurrentMethod().Name}: Требуется )");
                 }
             }
+            return EType._null;
         }
 
         static void For()
@@ -365,8 +437,15 @@ namespace HellLing.Core
             if (First(Lexem._int) || First(Lexem._double))
             {
                 ShiftToken();
+                if (FC.VarAssign2(car))
+                {
+                    ShiftToken(-1);
+                    VarDeclar();
+                    ShiftToken(-1);
+                    VarAssign();
+                }
             }
-            if (FC.VarAssign2(car))
+            else if (FC.VarAssign2(car))
             {
                 VarAssign();
             }
@@ -408,58 +487,128 @@ namespace HellLing.Core
             }
         }
 
-        static void Inc()
+        static EType Inc()
         {
             if (FC.Inc2(car))
             {
-                ShiftToken(2);
+                if (First(Lexem.TID))
+                {
+                    ShiftToken(2);
+                    return tree.GetTypeVar(GetToken(-1));
+                }
+                else
+                {
+                    ShiftToken(2);
+                    return tree.GetTypeVar(GetToken());
+                }
             }
+            return EType._null;
         }
 
-        static void Dec()
+        static EType Dec()
         {
             if (FC.Dec2(car))
             {
-                ShiftToken(2);
+                if (First(Lexem.TID))
+                {
+                    ShiftToken(2);
+                    return tree.GetTypeVar(GetToken(-1));
+                }
+                else
+                {
+                    ShiftToken(2);
+                    return tree.GetTypeVar(GetToken());
+                }
+            }
+            return EType._null;
+        }
+
+        static EType Expression()
+        {
+            EType result = EType.None;
+            EType type;
+            int start = car;
+            do
+            {
+                type = Addend();
+                result = CastPlusMinusType(type, result);
+            } while ((First(Lexem.TGE) || First(Lexem.TGT) || First(Lexem.TLE) || First(Lexem.TLT) || First(Lexem.TNQ) || First(Lexem.TEQ))
+                && ShiftToken());
+            if ((result == EType.None && type == EType._null) || (result == EType._null))
+            {
+                errors.Add(new Token(GetToken().Lexem, new Position(start + 1, car + 1), GetCarText(start + 1, car + 1), GetToken().Code), car, $"{System.Reflection.MethodBase.GetCurrentMethod().Name}: Невозможно привести типы в данном выражении");
+                return EType._null;
+            }
+            if (result != EType.None)
+            {
+                return result;
+            }
+            else
+            {
+                return type;
             }
         }
 
-        static void Expression()
+        static EType Addend()
         {
+            EType result = EType.None;
+            EType type;
             do
             {
-                Addend();
-            } while ((First(Lexem.TGE) || First(Lexem.TGT) || First(Lexem.TLE) || First(Lexem.TLT) || First(Lexem.TNQ) || First(Lexem.TEQ))
-                && ShiftToken());
-        }
-
-        static void Addend()
-        {
-            do
-            {
-                Multiplier();
+                type = Multiplier();
+                result = CastPlusMinusType(type, result);
             } while ((First(Lexem.TPlus) || First(Lexem.TMinus)) && ShiftToken());
+            if (result == EType.None)
+            {
+                return type;
+            }
+            return result;
         }
 
-        static void Multiplier()
+        static EType Multiplier()
         {
+            EType result = EType.None;
+            EType type;
             do
             {
-                AtomicExpression();
+                type = AtomicExpression();
+                if (First(Lexem.TMult))
+                {
+                    result = CastMultType(type, result);
+                }
+                else if (First(Lexem.TDiv))
+                {
+                    result = CastDivType(type, result);
+                }
             } while ((First(Lexem.TMult) || First(Lexem.TDiv)) && ShiftToken());
+            if (result == EType.None)
+            {
+                return type;
+            }
+            return result;
         }
 
-        static void AtomicExpression()
+        static EType AtomicExpression()
         {
             if (First(Lexem.TNot))
             {
                 ShiftToken();
-                Expression();
+                return Expression();
             }
             else if (First(Lexem.TID, Lexem.TCLS))
             {
-                ShiftToken(2);
-                Expression();
+                ShiftToken();
+                EType type = tree.GetTypeArray(GetToken());
+                ShiftToken();
+                if (First(Lexem.TConstInt) || First(Lexem.TID))
+                {
+                    ShiftToken();
+                }
+                else
+                {
+                    errors.Add(GetToken(), car, $"{System.Reflection.MethodBase.GetCurrentMethod().Name}: Ожидался тип int");
+                    ShiftToken();
+                }
                 if (First(Lexem.TCRS))
                 {
                     ShiftToken();
@@ -469,40 +618,51 @@ namespace HellLing.Core
                     errors.Add(GetToken(), car, $"{System.Reflection.MethodBase.GetCurrentMethod().Name}: Требуется ]");
                     ShiftToken();
                 }
+                return type;
             }
             else if (FC.Inc2(car))
             {
-                Inc();
+                return Inc();
             }
             else if (FC.Inc2(car))
             {
-                Dec();
+                return Dec();
             }
             else if (First(Lexem.TConstInt))
             {
                 ShiftToken();
+                return EType.Int;
             }
             else if (First(Lexem.TConstDouble))
             {
                 ShiftToken();
+                return EType.Double;
             }
             else if (First(Lexem.TConstChar))
             {
                 ShiftToken();
+                return EType.Char;
             }
             else if (First(Lexem.TID))
             {
                 ShiftToken();
+                if (!tree.ContainsVar(GetToken(0)))
+                {
+                    errors.Add(GetToken(), car, $"{System.Reflection.MethodBase.GetCurrentMethod().Name}: Переменная не объявлена");
+                    return EType._null;
+                }
+                return tree.GetTypeVar(GetToken());
             }
             else if (FC.MethodCall2(car))
             {
-                MethodCall();
+                return MethodCall();
             }
             else
             {
                 errors.Add(GetToken(), car, $"{System.Reflection.MethodBase.GetCurrentMethod().Name}: Ожидалось элементарное выражение");
                 ShiftToken();
             }
+            return EType._null;
         }
 
         #region Operation
@@ -536,6 +696,15 @@ namespace HellLing.Core
                 return true;
             }
             return false;
+        }
+        static string GetCarText(int start, int end)
+        {
+            string result = "";
+            for (int i = start; i < end; i++)
+            {
+                result += Tokens[i].State;
+            }
+            return result;
         }
         #endregion
 
@@ -603,7 +772,15 @@ namespace HellLing.Core
         public static bool AddArray(int shift = 0)
         {
             Token token = GetToken(shift);
-            int lenght = int.Parse(GetToken(shift + 2).Title);
+            int lenght = int.Parse(GetToken(shift + 2).State);
+            try
+            {
+                lenght = int.Parse(GetToken(shift + 2).State);
+            }
+            catch (System.Exception)
+            {
+                lenght = 100;
+            }
             if (tree.FindUpVar(token) != null || tree.FindUpArray(token) != null)
             {
                 errors.Add(token, car, $"{MethodInfo.GetCurrentMethod().Name} - Массив {token.State} уже существует в этой области видимости");
@@ -611,7 +788,7 @@ namespace HellLing.Core
             }
             else
             {
-                switch (GetToken(shift-1).Lexem)
+                switch (GetToken(shift - 1).Lexem)
                 {
                     case Lexem._int:
                         tree.SetLeft(Node.NewArray(token.State, EType.Int, lenght, false));
@@ -624,6 +801,237 @@ namespace HellLing.Core
                 }
                 tree = tree.Left;
                 return true;
+            }
+        }
+        #endregion
+
+        #region Cast
+        static EType CastMultType(EType hold, EType actual)
+        {
+            if (actual == EType.None)
+            {
+                return hold;
+            }
+            if (hold == EType._null || actual == EType._null)
+            {
+                return EType._null;
+            }
+            switch (hold)
+            {
+                case EType.Int:
+                    if (actual == EType.Int || actual == EType.Char)
+                    {
+                        return EType.Int;
+                    }
+                    else if (actual == EType.Double)
+                    {
+                        return EType.Double;
+                    }
+                    else
+                    {
+                        return EType._null;
+                    }
+                case EType.Double:
+                    if (actual == EType.Int || actual == EType.Double || actual == EType.Char)
+                    {
+                        return EType.Double;
+                    }
+                    else
+                    {
+                        return EType._null;
+                    }
+                case EType.Char:
+                    if (actual == EType.Int || actual == EType.Char)
+                    {
+                        return EType.Int;
+                    }
+                    else if (actual == EType.Double)
+                    {
+                        return EType.Double;
+                    }
+                    else
+                    {
+                        return EType._null;
+                    }
+                default:
+                    return EType._null;
+            }
+        }
+        static EType CastDivType(EType hold, EType actual)
+        {
+            if (actual == EType.None)
+            {
+                return hold;
+            }
+            if (hold == EType._null || actual == EType._null)
+            {
+                return EType._null;
+            }
+            switch (hold)
+            {
+                case EType.Int:
+                    if (actual == EType.Int || actual == EType.Char || actual == EType.Double)
+                    {
+                        return EType.Double;
+                    }
+                    else
+                    {
+                        return EType._null;
+                    }
+                case EType.Double:
+                    if (actual == EType.Int || actual == EType.Double || actual == EType.Char)
+                    {
+                        return EType.Double;
+                    }
+                    else
+                    {
+                        return EType._null;
+                    }
+                case EType.Char:
+                    if (actual == EType.Int || actual == EType.Char || actual == EType.Double)
+                    {
+                        return EType.Double;
+                    }
+                    else
+                    {
+                        return EType._null;
+                    }
+                default:
+                    return EType._null;
+            }
+        }
+        static EType CastPlusMinusType(EType hold, EType actual)
+        {
+            if (actual == EType.None)
+            {
+                return hold;
+            }
+            if (hold == EType._null || actual == EType._null)
+            {
+                return EType._null;
+            }
+            switch (hold)
+            {
+                case EType.Int:
+                    if (actual == EType.Int)
+                    {
+                        return EType.Int;
+                    }
+                    else if (actual == EType.Double)
+                    {
+                        return EType.Double;
+                    }
+                    else if (actual == EType.Char)
+                    {
+                        return EType.Int;
+                    }
+                    else
+                    {
+                        return EType._null;
+                    }
+                case EType.Double:
+                    if (actual == EType.Int)
+                    {
+                        return EType.Double;
+                    }
+                    else if (actual == EType.Double)
+                    {
+                        return EType.Double;
+                    }
+                    else if (actual == EType.Char)
+                    {
+                        return EType.Double;
+                    }
+                    else
+                    {
+                        return EType._null;
+                    }
+                case EType.Char:
+                    if (actual == EType.Int)
+                    {
+                        return EType.Int;
+                    }
+                    else if (actual == EType.Double)
+                    {
+                        return EType.Double;
+                    }
+                    else if (actual == EType.Char)
+                    {
+                        return EType.Char;
+                    }
+                    else
+                    {
+                        return EType._null;
+                    }
+                default:
+                    return EType._null;
+            }
+        }
+        static EType CastLogicType(EType hold, EType actual)
+        {
+            if (actual == EType.None)
+            {
+                return hold;
+            }
+            if (hold == EType._null || actual == EType._null)
+            {
+                return EType._null;
+            }
+            switch (hold)
+            {
+                case EType.Int:
+                    if (actual == EType.Int)
+                    {
+                        return EType.Char;
+                    }
+                    else if (actual == EType.Double)
+                    {
+                        return EType.Char;
+                    }
+                    else if (actual == EType.Char)
+                    {
+                        return EType.Char;
+                    }
+                    else
+                    {
+                        return EType._null;
+                    }
+                case EType.Double:
+                    if (actual == EType.Int)
+                    {
+                        return EType.Char;
+                    }
+                    else if (actual == EType.Double)
+                    {
+                        return EType.Char;
+                    }
+                    else if (actual == EType.Char)
+                    {
+                        return EType.Char;
+                    }
+                    else
+                    {
+                        return EType._null;
+                    }
+                case EType.Char:
+                    if (actual == EType.Int)
+                    {
+                        return EType.Char;
+                    }
+                    else if (actual == EType.Double)
+                    {
+                        return EType.Char;
+                    }
+                    else if (actual == EType.Char)
+                    {
+                        return EType.Char;
+                    }
+                    else
+                    {
+                        return EType._null;
+                    }
+                default:
+                    return EType._null;
             }
         }
         #endregion

@@ -16,15 +16,15 @@ namespace HellLing.Model.STree
         /// <summary>
         /// Var, Array, Func, Const
         /// </summary>
-        public EType? Type { get; private set; }
+        public EType Type { get; private set; }
         /// <summary>
         /// Var, Array, Const, Func, None
         /// </summary>
-        public EElement? Element { get; private set; }
+        public EElement Element { get; private set; }
         /// <summary>
         /// Array
         /// </summary>
-        public int? Length { get; private set; }
+        public int Length { get; private set; }
         /// <summary>
         /// Var - Константа?
         /// </summary>

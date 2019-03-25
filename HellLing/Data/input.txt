@@ -1,15 +1,21 @@
 int f = '0';
-int main()
+
+int Method2(int a1){
+	int g1 = 0;
+	int g2 = 0;
+	g1 = g2 + g1++ + 10/2.1;
+}
+
+int main(int a1, double a2)
 {
-	int f;
-	for(i=0; i < 10; i++)
+	int temp = a1 + a2;
+	int g[3];
+	for(int i=0; i < 10; i++)
 	{
 		g[i] = i+1;
 		Method2(g[i], ++i);
-		int temp;
-		Method2(i, 2, g[i++]);
+		Method2(i, 2, g[i]);
 	}
-	int temp;
 	int s = 2/f-2*2+1.1*1+2;
 	f = 3;
 }
@@ -19,12 +25,11 @@ double Method1(int a1, double a2, int a3){
 	int s;
 	temp++;
 	temp = temp - a2;
-	int f;
 	for(int i=0; i <= 10; i = i + 1){
-		for(k = 0; k<1; k++){
+		for(int k = 0; k<1; k++){
 			Method2();
 			temp = temp + 1;
-			for(int f = 1; f <0; f++){
+			for(int d = 1; d <0; d++){
 			}
 		}
 	}
@@ -33,10 +38,6 @@ double Method1(int a1, double a2, int a3){
 	return 0;
 }
 
-int Method2(int a1){
-	g1 = g2 + g1++ + 10/2.1;
-}
-
-double Method2(int a1){
-	return 0.11;
-}
+// double Method2(int a1){
+//	return 0.11;
+// }
