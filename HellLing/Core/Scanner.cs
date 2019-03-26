@@ -42,6 +42,7 @@ namespace HellLing.Core
             text = text.Replace("\r", "");
             int start = 0;
             int end;
+            Token.Text = text;
             report = new List<Token>();
             InitLexemList();
             ProgressIdentityLex();
@@ -56,13 +57,13 @@ namespace HellLing.Core
                     {
                         end = start;
                         code = CheckKeyWords(text, start, pos);
-                        token.Set((Lexem)code, new Position(start, pos), text);
+                        token.Set((Lexem)code, new Position(start, pos));
                     }
                     else
                     {
                         end = start;
                         code = CheckKeyWords(text, start, pos);
-                        token.Set((Lexem)code, new Position(start, pos), text);
+                        token.Set((Lexem)code, new Position(start, pos));
                     }
                     if (typ != "Com" && typ != "Ch")
                     {
@@ -70,18 +71,18 @@ namespace HellLing.Core
                             if (Ident.OPart(text[i]) != 0)
                             {
                                 code = Ident.OPart(text[i]);
-                                report.Add(new Token((Lexem)code, new Position(i, i + 1), text));
+                                report.Add(new Token((Lexem)code, new Position(i, i + 1)));
                             }
                     }
                     else
-                        report.Add(new Token((Lexem)code, new Position(start, end), text));
-                    report.Add(new Token((Lexem)300, new Position(start, end), text));
+                        report.Add(new Token((Lexem)code, new Position(start, end)));
+                    report.Add(new Token((Lexem)300, new Position(start, end)));
                     if (!isTakeIng)
                     {
-                        report.Insert(0, new Token(Lexem.TSOF, new Position(start, end), text));
+                        report.Insert(0, new Token(Lexem.TSOF, new Position(start, end)));
                         return report.Where(x => x.Lexem != Lexem.TIgn && x.Lexem != Lexem.TCom).ToList();
                     }
-                    report.Insert(0, new Token(Lexem.TSOF, new Position(start, end), text));
+                    report.Insert(0, new Token(Lexem.TSOF, new Position(start, end)));
                     return report;
                 }
                 ch = text[pos];
@@ -108,11 +109,11 @@ namespace HellLing.Core
                             Token token = new Token();
                             if (code == 0)
                             {
-                                token.Set((Lexem)403, new Position(start, pos), text);
+                                token.Set((Lexem)403, new Position(start, pos));
                                 if (report.Last().Code != 403)
                                 {
                                     end = start;
-                                    report.Add(new Token((Lexem)code, new Position(start, end), text));
+                                    report.Add(new Token((Lexem)code, new Position(start, end)));
                                     start = pos;
                                 }
                             }
@@ -120,16 +121,16 @@ namespace HellLing.Core
                             {
                                 end = pos;
                                 code = CheckKeyWords(text, start, end);
-                                token.Set((Lexem)403, new Position(start, pos), text);
+                                token.Set((Lexem)403, new Position(start, pos));
                                 if (item == "OPart")
                                     for (int i = start; i < end; i++)
                                     {
                                         code = Ident.OPart(text[i]);
-                                        report.Add(new Token((Lexem)code, new Position(i, i + 1), text));
+                                        report.Add(new Token((Lexem)code, new Position(i, i + 1)));
                                     }
 
                                 else
-                                    report.Add(new Token((Lexem)code, new Position(start, end), text));
+                                    report.Add(new Token((Lexem)code, new Position(start, end)));
                                 start = end;
                                 code = 0;
                                 pos--;

@@ -18,6 +18,7 @@ namespace HellLing
             Errors errors = Analyzer.Start(tokens);
             Console.WriteLine(GetStringAnalyzer(errors));
             Tree tree = Analyzer.tree;
+            errors.PrintErrorCode();
             Console.ReadKey();
         }
         static string GetStringScanner(List<Token> tokens)

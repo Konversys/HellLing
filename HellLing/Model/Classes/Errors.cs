@@ -21,5 +21,19 @@ namespace HellLing.Model.Classes
         {
             return exceptions.Select(x => x.ToString()).ToList();
         }
+
+        public void PrintErrorCode()
+        {
+            string text = Token.Text;
+            for (int i = 0; i < text.Count(); i++)
+            {
+                Console.ResetColor();
+                if (true)
+                {
+
+                }
+                Console.Write(text[i]);
+            }
+        }
     }
 }
