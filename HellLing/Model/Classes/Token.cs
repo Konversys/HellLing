@@ -83,7 +83,11 @@ namespace HellLing.Model.Classes
         }
         public override string ToString()
         {
-            //return $"Title={Title,-13} Code={Code,-4} State={State,-15} Start={Position.Start,-3} End={Position.End,-3} Line={Line} Sumbol={Sumbol}";
+            return $"Title={Title,-13} Code={Code,-4} State={State,-15} Start={Position.Start,-3} End={Position.End,-3} Line={Line} Sumbol={Sumbol}";
+        }
+
+        public string GetLexem()
+        {
             return $" Line={Line,-3} Sumbol={Sumbol,-3} State={State,-15}";
         }
     }

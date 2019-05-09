@@ -23,5 +23,10 @@ namespace HellLing.Model.Classes
         {
             return $"{Token.ToString()} : Токен {Car}: {Error}";
         }
+
+        public string GetLexem()
+        {
+            return $"{Token.GetLexem()} : Токен {Car}: {Error}";
+        }
     }
 }

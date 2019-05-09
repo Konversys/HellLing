@@ -26,17 +26,17 @@ namespace HellLing.Model.STree
         /// </summary>
         public int Length { get; private set; }
         /// <summary>
-        /// Var - Константа?
+        /// Название функции для аргумента?
         /// </summary>
-        public bool IsEditable { get; private set; }
+        public string Func { get; private set; }
 
-        public static Node NewVar(string title, EType type, bool isEditable = true)
+        public static Node NewVar(string title, EType type, string func = null)
         {
-            return new Node() { Element = EElement.Var, Type = type, Title = title, IsEditable = isEditable };
+            return new Node() { Element = EElement.Var, Type = type, Title = title, Func = func };
         }
-        public static Node NewArray(string title, EType type, int length, bool isEditable = true)
+        public static Node NewArray(string title, EType type, int length, string func = null)
         {
-            return new Node() { Element = EElement.Array, Type = type, Title = title, Length = length, IsEditable = isEditable };
+            return new Node() { Element = EElement.Array, Type = type, Title = title, Length = length, Func = func };
         }
         public static Node NewFunction(string title, EType returnType)
         {

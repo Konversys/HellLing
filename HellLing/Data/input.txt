@@ -1,42 +1,29 @@
 int f = '0';
+
+int func(){
+
+int g;
+
+
+}
+
 int main()
 {
-	int f;
-	for(i=0; i < 10; i++)
+	int i;
+	for(i=i; i < 10; i++)
 	{
-		g[i] = i+1;
-		Method2(g[i], ++i);
-		int temp;
-		Method2(i, 2, g[i++]);
+	for(i=i; i < 10; i++)
+	{
+	for(i=i; i < 10; i++)
+	{
+	for(i=i; i < 10; i++)
+	{
+	   
+	}
+	}
+	}
 	}
 	int temp;
 	int s = 2/f-2*2+1.1*1+2;
 	f = 3;
-}
-
-double Method1(int a1, double a2, int a3){
-	int temp = a1 + a2;
-	int s;
-	temp++;
-	temp = temp - a2;
-	int f;
-	for(int i=0; i <= 10; i = i + 1){
-		for(k = 0; k<1; k++){
-			Method2();
-			temp = temp + 1;
-			for(int f = 1; f <0; f++){
-			}
-		}
-	}
-	temp = !temp;
-	temp = temp < temp;
-	return 0;
-}
-
-int Method2(int a1){
-	g1 = g2 + g1++ + 10/2.1;
-}
-
-double Method2(int a1){
-	return 0.11;
 }

@@ -28,6 +28,10 @@ namespace HellLing.Core
         /// Каретка
         /// </summary>
         static int car { get; set; }
+        /// <summary>
+        /// Текущяя функция
+        /// </summary>
+        static string FuncName { get; set; }
         static bool CurrentToken(Lexem lex)
         {
             if (Tokens[car].Lexem == lex)
@@ -65,6 +69,7 @@ namespace HellLing.Core
 
         static void Program()
         {
+            FuncName = null;
             while (!First(Lexem.TEOF))
             {
                 if (FC.Method3(car))
@@ -85,9 +90,11 @@ namespace HellLing.Core
         static void Method()
         {
             ShiftToken(3);
+            FuncName = null;
             AddFunc(-1);
             save.Push(tree);
             ArgDeclar();
+            FuncName = null;
             ShiftToken(2);
             MethodBlock();
             tree = save.Pop();
@@ -253,7 +260,7 @@ namespace HellLing.Core
                     ShiftToken(2);
                     if (First(Lexem.TCLS))
                     {
-                        AddArray();
+                        AddArray(0, true);
                         ShiftToken();
                         if (First(Lexem.TConstInt) || First(Lexem.TID))
                         {
@@ -276,7 +283,7 @@ namespace HellLing.Core
                     }
                     else
                     {
-                        AddVar();
+                        AddVar(0, true);
                     }
                 }
             } while (First(Lexem.TZpt) && ShiftToken());
@@ -726,6 +733,7 @@ namespace HellLing.Core
             }
             else
             {
+                FuncName = token.State;
                 switch (GetToken(shift - 1).Lexem)
                 {
                     case Lexem._int:
@@ -744,7 +752,7 @@ namespace HellLing.Core
                 return true;
             }
         }
-        public static bool AddVar(int shift = 0)
+        public static bool AddVar(int shift = 0, bool isFunc = false)
         {
             Token token = GetToken(shift);
             if (tree.FindUpVar(token) != null || tree.FindUpArray(token) != null)
@@ -757,10 +765,24 @@ namespace HellLing.Core
                 switch (GetToken(shift - 1).Lexem)
                 {
                     case Lexem._int:
-                        tree.SetLeft(Node.NewVar(token.State, EType.Int));
+                        if (isFunc)
+                        {
+                            tree.SetLeft(Node.NewVar(token.State, EType.Int, FuncName));
+                        }
+                        else
+                        {
+                            tree.SetLeft(Node.NewVar(token.State, EType.Int));
+                        }
                         break;
                     case Lexem._double:
-                        tree.SetLeft(Node.NewVar(token.State, EType.Double));
+                        if (isFunc)
+                        {
+                            tree.SetLeft(Node.NewVar(token.State, EType.Double, FuncName));
+                        }
+                        else
+                        {
+                            tree.SetLeft(Node.NewVar(token.State, EType.Double));
+                        }
                         break;
                     default:
                         return false;
@@ -769,7 +791,7 @@ namespace HellLing.Core
                 return true;
             }
         }
-        public static bool AddArray(int shift = 0)
+        public static bool AddArray(int shift = 0, bool isFunc = false)
         {
             Token token = GetToken(shift);
             int lenght = int.Parse(GetToken(shift + 2).State);
@@ -791,10 +813,24 @@ namespace HellLing.Core
                 switch (GetToken(shift - 1).Lexem)
                 {
                     case Lexem._int:
-                        tree.SetLeft(Node.NewArray(token.State, EType.Int, lenght, false));
+                        if (isFunc)
+                        {
+                            tree.SetLeft(Node.NewArray(token.State, EType.Int, lenght, FuncName));
+                        }
+                        else
+                        {
+                            tree.SetLeft(Node.NewArray(token.State, EType.Int, lenght));
+                        }
                         break;
                     case Lexem._double:
-                        tree.SetLeft(Node.NewArray(token.State, EType.Double, lenght, false));
+                        if (isFunc)
+                        {
+                            tree.SetLeft(Node.NewArray(token.State, EType.Double, lenght, FuncName));
+                        }
+                        else
+                        {
+                            tree.SetLeft(Node.NewArray(token.State, EType.Double, lenght));
+                        }
                         break;
                     default:
                         return false;

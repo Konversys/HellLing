@@ -1,233 +1,111 @@
-00:  Line=41  Sumbol=1   State=               
-01:  Line=0   Sumbol=0   State=int            
-02:  Line=0   Sumbol=4   State=f              
-03:  Line=0   Sumbol=6   State==              
-04:  Line=0   Sumbol=8   State='0'            
-05:  Line=0   Sumbol=11  State=;              
-06:  Line=1   Sumbol=1   State=int            
-07:  Line=1   Sumbol=5   State=main           
-08:  Line=1   Sumbol=9   State=(              
-09:  Line=1   Sumbol=10  State=)              
-10:  Line=2   Sumbol=1   State={              
-11:  Line=3   Sumbol=2   State=int            
-12:  Line=3   Sumbol=6   State=f              
-13:  Line=3   Sumbol=7   State=;              
-14:  Line=4   Sumbol=2   State=for            
-15:  Line=4   Sumbol=5   State=(              
-16:  Line=4   Sumbol=6   State=i              
-17:  Line=4   Sumbol=7   State==              
-18:  Line=4   Sumbol=8   State=0              
-19:  Line=4   Sumbol=9   State=;              
-20:  Line=4   Sumbol=11  State=i              
-21:  Line=4   Sumbol=13  State=<              
-22:  Line=4   Sumbol=15  State=10             
-23:  Line=4   Sumbol=17  State=;              
-24:  Line=4   Sumbol=19  State=i              
-25:  Line=4   Sumbol=20  State=++             
-26:  Line=4   Sumbol=22  State=)              
-27:  Line=5   Sumbol=2   State={              
-28:  Line=6   Sumbol=3   State=g              
-29:  Line=6   Sumbol=4   State=[              
-30:  Line=6   Sumbol=5   State=i              
-31:  Line=6   Sumbol=6   State=]              
-32:  Line=6   Sumbol=8   State==              
-33:  Line=6   Sumbol=10  State=i              
-34:  Line=6   Sumbol=11  State=+              
-35:  Line=6   Sumbol=12  State=1              
-36:  Line=6   Sumbol=13  State=;              
-37:  Line=7   Sumbol=3   State=Method2        
-38:  Line=7   Sumbol=10  State=(              
-39:  Line=7   Sumbol=11  State=g              
-40:  Line=7   Sumbol=12  State=[              
-41:  Line=7   Sumbol=13  State=i              
-42:  Line=7   Sumbol=14  State=]              
-43:  Line=7   Sumbol=15  State=,              
-44:  Line=7   Sumbol=17  State=++             
-45:  Line=7   Sumbol=19  State=i              
-46:  Line=7   Sumbol=20  State=)              
-47:  Line=7   Sumbol=21  State=;              
-48:  Line=8   Sumbol=3   State=int            
-49:  Line=8   Sumbol=7   State=temp           
-50:  Line=8   Sumbol=11  State=;              
-51:  Line=9   Sumbol=3   State=Method2        
-52:  Line=9   Sumbol=10  State=(              
-53:  Line=9   Sumbol=11  State=i              
-54:  Line=9   Sumbol=12  State=,              
-55:  Line=9   Sumbol=14  State=2              
-56:  Line=9   Sumbol=15  State=,              
-57:  Line=9   Sumbol=17  State=g              
-58:  Line=9   Sumbol=18  State=[              
-59:  Line=9   Sumbol=19  State=i              
-60:  Line=9   Sumbol=20  State=++             
-61:  Line=9   Sumbol=22  State=]              
-62:  Line=9   Sumbol=23  State=)              
-63:  Line=9   Sumbol=24  State=;              
-64:  Line=10  Sumbol=2   State=}              
-65:  Line=11  Sumbol=2   State=int            
-66:  Line=11  Sumbol=6   State=temp           
-67:  Line=11  Sumbol=10  State=;              
-68:  Line=12  Sumbol=2   State=int            
-69:  Line=12  Sumbol=6   State=s              
-70:  Line=12  Sumbol=8   State==              
-71:  Line=12  Sumbol=10  State=2              
-72:  Line=12  Sumbol=11  State=/              
-73:  Line=12  Sumbol=12  State=f              
-74:  Line=12  Sumbol=13  State=-              
-75:  Line=12  Sumbol=14  State=2              
-76:  Line=12  Sumbol=15  State=*              
-77:  Line=12  Sumbol=16  State=2              
-78:  Line=12  Sumbol=17  State=+              
-79:  Line=12  Sumbol=18  State=1.1            
-80:  Line=12  Sumbol=21  State=*              
-81:  Line=12  Sumbol=22  State=1              
-82:  Line=12  Sumbol=23  State=+              
-83:  Line=12  Sumbol=24  State=2              
-84:  Line=12  Sumbol=25  State=;              
-85:  Line=13  Sumbol=2   State=f              
-86:  Line=13  Sumbol=4   State==              
-87:  Line=13  Sumbol=6   State=3              
-88:  Line=13  Sumbol=7   State=;              
-89:  Line=14  Sumbol=1   State=}              
-90:  Line=16  Sumbol=1   State=double         
-91:  Line=16  Sumbol=8   State=Method1        
-92:  Line=16  Sumbol=15  State=(              
-93:  Line=16  Sumbol=16  State=int            
-94:  Line=16  Sumbol=20  State=a1             
-95:  Line=16  Sumbol=22  State=,              
-96:  Line=16  Sumbol=24  State=double         
-97:  Line=16  Sumbol=31  State=a2             
-98:  Line=16  Sumbol=33  State=,              
-99:  Line=16  Sumbol=35  State=int            
-100:  Line=16  Sumbol=39  State=a3             
-101:  Line=16  Sumbol=41  State=)              
-102:  Line=16  Sumbol=42  State={              
-103:  Line=17  Sumbol=2   State=int            
-104:  Line=17  Sumbol=6   State=temp           
-105:  Line=17  Sumbol=11  State==              
-106:  Line=17  Sumbol=13  State=a1             
-107:  Line=17  Sumbol=16  State=+              
-108:  Line=17  Sumbol=18  State=a2             
-109:  Line=17  Sumbol=20  State=;              
-110:  Line=18  Sumbol=2   State=int            
-111:  Line=18  Sumbol=6   State=s              
-112:  Line=18  Sumbol=7   State=;              
-113:  Line=19  Sumbol=2   State=temp           
-114:  Line=19  Sumbol=6   State=++             
-115:  Line=19  Sumbol=8   State=;              
-116:  Line=20  Sumbol=2   State=temp           
-117:  Line=20  Sumbol=7   State==              
-118:  Line=20  Sumbol=9   State=temp           
-119:  Line=20  Sumbol=14  State=-              
-120:  Line=20  Sumbol=16  State=a2             
-121:  Line=20  Sumbol=18  State=;              
-122:  Line=21  Sumbol=2   State=int            
-123:  Line=21  Sumbol=6   State=f              
-124:  Line=21  Sumbol=7   State=;              
-125:  Line=22  Sumbol=2   State=for            
-126:  Line=22  Sumbol=5   State=(              
-127:  Line=22  Sumbol=6   State=int            
-128:  Line=22  Sumbol=10  State=i              
-129:  Line=22  Sumbol=11  State==              
-130:  Line=22  Sumbol=12  State=0              
-131:  Line=22  Sumbol=13  State=;              
-132:  Line=22  Sumbol=15  State=i              
-133:  Line=22  Sumbol=17  State=<=             
-134:  Line=22  Sumbol=20  State=10             
-135:  Line=22  Sumbol=22  State=;              
-136:  Line=22  Sumbol=24  State=i              
-137:  Line=22  Sumbol=26  State==              
-138:  Line=22  Sumbol=28  State=i              
-139:  Line=22  Sumbol=30  State=+              
-140:  Line=22  Sumbol=32  State=1              
-141:  Line=22  Sumbol=33  State=)              
-142:  Line=22  Sumbol=34  State={              
-143:  Line=23  Sumbol=3   State=for            
-144:  Line=23  Sumbol=6   State=(              
-145:  Line=23  Sumbol=7   State=k              
-146:  Line=23  Sumbol=9   State==              
-147:  Line=23  Sumbol=11  State=0              
-148:  Line=23  Sumbol=12  State=;              
-149:  Line=23  Sumbol=14  State=k              
-150:  Line=23  Sumbol=15  State=<              
-151:  Line=23  Sumbol=16  State=1              
-152:  Line=23  Sumbol=17  State=;              
-153:  Line=23  Sumbol=19  State=k              
-154:  Line=23  Sumbol=20  State=++             
-155:  Line=23  Sumbol=22  State=)              
-156:  Line=23  Sumbol=23  State={              
-157:  Line=24  Sumbol=4   State=Method2        
-158:  Line=24  Sumbol=11  State=(              
-159:  Line=24  Sumbol=12  State=)              
-160:  Line=24  Sumbol=13  State=;              
-161:  Line=25  Sumbol=4   State=temp           
-162:  Line=25  Sumbol=9   State==              
-163:  Line=25  Sumbol=11  State=temp           
-164:  Line=25  Sumbol=16  State=+              
-165:  Line=25  Sumbol=18  State=1              
-166:  Line=25  Sumbol=19  State=;              
-167:  Line=26  Sumbol=4   State=for            
-168:  Line=26  Sumbol=7   State=(              
-169:  Line=26  Sumbol=8   State=int            
-170:  Line=26  Sumbol=12  State=f              
-171:  Line=26  Sumbol=14  State==              
-172:  Line=26  Sumbol=16  State=1              
-173:  Line=26  Sumbol=17  State=;              
-174:  Line=26  Sumbol=19  State=f              
-175:  Line=26  Sumbol=21  State=<              
-176:  Line=26  Sumbol=22  State=0              
-177:  Line=26  Sumbol=23  State=;              
-178:  Line=26  Sumbol=25  State=f              
-179:  Line=26  Sumbol=26  State=++             
-180:  Line=26  Sumbol=28  State=)              
-181:  Line=26  Sumbol=29  State={              
-182:  Line=27  Sumbol=4   State=}              
-183:  Line=28  Sumbol=3   State=}              
-184:  Line=29  Sumbol=2   State=}              
-185:  Line=30  Sumbol=2   State=temp           
-186:  Line=30  Sumbol=7   State==              
-187:  Line=30  Sumbol=9   State=!              
-188:  Line=30  Sumbol=10  State=temp           
-189:  Line=30  Sumbol=14  State=;              
-190:  Line=31  Sumbol=2   State=temp           
-191:  Line=31  Sumbol=7   State==              
-192:  Line=31  Sumbol=9   State=temp           
-193:  Line=31  Sumbol=14  State=<              
-194:  Line=31  Sumbol=16  State=temp           
-195:  Line=31  Sumbol=20  State=;              
-196:  Line=32  Sumbol=2   State=return         
-197:  Line=32  Sumbol=9   State=0              
-198:  Line=32  Sumbol=10  State=;              
-199:  Line=33  Sumbol=1   State=}              
-200:  Line=35  Sumbol=1   State=int            
-201:  Line=35  Sumbol=5   State=Method2        
-202:  Line=35  Sumbol=12  State=(              
-203:  Line=35  Sumbol=13  State=int            
-204:  Line=35  Sumbol=17  State=a1             
-205:  Line=35  Sumbol=19  State=)              
-206:  Line=35  Sumbol=20  State={              
-207:  Line=36  Sumbol=2   State=g1             
-208:  Line=36  Sumbol=5   State==              
-209:  Line=36  Sumbol=7   State=g2             
-210:  Line=36  Sumbol=10  State=+              
-211:  Line=36  Sumbol=12  State=g1             
-212:  Line=36  Sumbol=14  State=++             
-213:  Line=36  Sumbol=17  State=+              
-214:  Line=36  Sumbol=19  State=10             
-215:  Line=36  Sumbol=21  State=/              
-216:  Line=36  Sumbol=22  State=2.1            
-217:  Line=36  Sumbol=25  State=;              
-218:  Line=37  Sumbol=1   State=}              
-219:  Line=39  Sumbol=1   State=double         
-220:  Line=39  Sumbol=8   State=Method2        
-221:  Line=39  Sumbol=15  State=(              
-222:  Line=39  Sumbol=16  State=int            
-223:  Line=39  Sumbol=20  State=a1             
-224:  Line=39  Sumbol=22  State=)              
-225:  Line=39  Sumbol=23  State={              
-226:  Line=40  Sumbol=2   State=return         
-227:  Line=40  Sumbol=9   State=0.11           
-228:  Line=40  Sumbol=13  State=;              
-229:  Line=41  Sumbol=1   State=}              
-230:  Line=41  Sumbol=1   State=               
+00: Title=TSOF          Code=301  State=                Start=223 End=223 Line=28 Sumbol=1
+01: Title=_int          Code=33   State=int             Start=0   End=3   Line=0 Sumbol=0
+02: Title=TID           Code=1    State=f               Start=4   End=5   Line=0 Sumbol=4
+03: Title=TSave         Code=8    State==               Start=6   End=7   Line=0 Sumbol=6
+04: Title=TConstChar    Code=7    State='0'             Start=8   End=11  Line=0 Sumbol=8
+05: Title=TTZpt         Code=22   State=;               Start=11  End=12  Line=0 Sumbol=11
+06: Title=_int          Code=33   State=int             Start=14  End=17  Line=2 Sumbol=1
+07: Title=TID           Code=1    State=func            Start=18  End=22  Line=2 Sumbol=5
+08: Title=TLS           Code=25   State=(               Start=22  End=23  Line=2 Sumbol=9
+09: Title=TRS           Code=26   State=)               Start=23  End=24  Line=2 Sumbol=10
+10: Title=TFLS          Code=27   State={               Start=24  End=25  Line=2 Sumbol=11
+11: Title=_int          Code=33   State=int             Start=27  End=30  Line=4 Sumbol=1
+12: Title=TID           Code=1    State=g               Start=31  End=32  Line=4 Sumbol=5
+13: Title=TTZpt         Code=22   State=;               Start=32  End=33  Line=4 Sumbol=6
+14: Title=TFRS          Code=28   State=}               Start=36  End=37  Line=7 Sumbol=1
+15: Title=_int          Code=33   State=int             Start=39  End=42  Line=9 Sumbol=1
+16: Title=TID           Code=1    State=main            Start=43  End=47  Line=9 Sumbol=5
+17: Title=TLS           Code=25   State=(               Start=47  End=48  Line=9 Sumbol=9
+18: Title=TRS           Code=26   State=)               Start=48  End=49  Line=9 Sumbol=10
+19: Title=TFLS          Code=27   State={               Start=50  End=51  Line=10 Sumbol=1
+20: Title=_int          Code=33   State=int             Start=53  End=56  Line=11 Sumbol=2
+21: Title=TID           Code=1    State=i               Start=57  End=58  Line=11 Sumbol=6
+22: Title=TTZpt         Code=22   State=;               Start=58  End=59  Line=11 Sumbol=7
+23: Title=_for          Code=4    State=for             Start=61  End=64  Line=12 Sumbol=2
+24: Title=TLS           Code=25   State=(               Start=64  End=65  Line=12 Sumbol=5
+25: Title=TID           Code=1    State=i               Start=65  End=66  Line=12 Sumbol=6
+26: Title=TSave         Code=8    State==               Start=66  End=67  Line=12 Sumbol=7
+27: Title=TID           Code=1    State=i               Start=67  End=68  Line=12 Sumbol=8
+28: Title=TTZpt         Code=22   State=;               Start=68  End=69  Line=12 Sumbol=9
+29: Title=TID           Code=1    State=i               Start=70  End=71  Line=12 Sumbol=11
+30: Title=TLT           Code=11   State=<               Start=72  End=73  Line=12 Sumbol=13
+31: Title=TConstInt     Code=2    State=10              Start=74  End=76  Line=12 Sumbol=15
+32: Title=TTZpt         Code=22   State=;               Start=76  End=77  Line=12 Sumbol=17
+33: Title=TID           Code=1    State=i               Start=78  End=79  Line=12 Sumbol=19
+34: Title=TInc          Code=16   State=++              Start=79  End=81  Line=12 Sumbol=20
+35: Title=TRS           Code=26   State=)               Start=81  End=82  Line=12 Sumbol=22
+36: Title=TFLS          Code=27   State={               Start=84  End=85  Line=13 Sumbol=2
+37: Title=_for          Code=4    State=for             Start=87  End=90  Line=14 Sumbol=2
+38: Title=TLS           Code=25   State=(               Start=90  End=91  Line=14 Sumbol=5
+39: Title=TID           Code=1    State=i               Start=91  End=92  Line=14 Sumbol=6
+40: Title=TSave         Code=8    State==               Start=92  End=93  Line=14 Sumbol=7
+41: Title=TID           Code=1    State=i               Start=93  End=94  Line=14 Sumbol=8
+42: Title=TTZpt         Code=22   State=;               Start=94  End=95  Line=14 Sumbol=9
+43: Title=TID           Code=1    State=i               Start=96  End=97  Line=14 Sumbol=11
+44: Title=TLT           Code=11   State=<               Start=98  End=99  Line=14 Sumbol=13
+45: Title=TConstInt     Code=2    State=10              Start=100 End=102 Line=14 Sumbol=15
+46: Title=TTZpt         Code=22   State=;               Start=102 End=103 Line=14 Sumbol=17
+47: Title=TID           Code=1    State=i               Start=104 End=105 Line=14 Sumbol=19
+48: Title=TInc          Code=16   State=++              Start=105 End=107 Line=14 Sumbol=20
+49: Title=TRS           Code=26   State=)               Start=107 End=108 Line=14 Sumbol=22
+50: Title=TFLS          Code=27   State={               Start=110 End=111 Line=15 Sumbol=2
+51: Title=_for          Code=4    State=for             Start=113 End=116 Line=16 Sumbol=2
+52: Title=TLS           Code=25   State=(               Start=116 End=117 Line=16 Sumbol=5
+53: Title=TID           Code=1    State=i               Start=117 End=118 Line=16 Sumbol=6
+54: Title=TSave         Code=8    State==               Start=118 End=119 Line=16 Sumbol=7
+55: Title=TID           Code=1    State=i               Start=119 End=120 Line=16 Sumbol=8
+56: Title=TTZpt         Code=22   State=;               Start=120 End=121 Line=16 Sumbol=9
+57: Title=TID           Code=1    State=i               Start=122 End=123 Line=16 Sumbol=11
+58: Title=TLT           Code=11   State=<               Start=124 End=125 Line=16 Sumbol=13
+59: Title=TConstInt     Code=2    State=10              Start=126 End=128 Line=16 Sumbol=15
+60: Title=TTZpt         Code=22   State=;               Start=128 End=129 Line=16 Sumbol=17
+61: Title=TID           Code=1    State=i               Start=130 End=131 Line=16 Sumbol=19
+62: Title=TInc          Code=16   State=++              Start=131 End=133 Line=16 Sumbol=20
+63: Title=TRS           Code=26   State=)               Start=133 End=134 Line=16 Sumbol=22
+64: Title=TFLS          Code=27   State={               Start=136 End=137 Line=17 Sumbol=2
+65: Title=_for          Code=4    State=for             Start=139 End=142 Line=18 Sumbol=2
+66: Title=TLS           Code=25   State=(               Start=142 End=143 Line=18 Sumbol=5
+67: Title=TID           Code=1    State=i               Start=143 End=144 Line=18 Sumbol=6
+68: Title=TSave         Code=8    State==               Start=144 End=145 Line=18 Sumbol=7
+69: Title=TID           Code=1    State=i               Start=145 End=146 Line=18 Sumbol=8
+70: Title=TTZpt         Code=22   State=;               Start=146 End=147 Line=18 Sumbol=9
+71: Title=TID           Code=1    State=i               Start=148 End=149 Line=18 Sumbol=11
+72: Title=TLT           Code=11   State=<               Start=150 End=151 Line=18 Sumbol=13
+73: Title=TConstInt     Code=2    State=10              Start=152 End=154 Line=18 Sumbol=15
+74: Title=TTZpt         Code=22   State=;               Start=154 End=155 Line=18 Sumbol=17
+75: Title=TID           Code=1    State=i               Start=156 End=157 Line=18 Sumbol=19
+76: Title=TInc          Code=16   State=++              Start=157 End=159 Line=18 Sumbol=20
+77: Title=TRS           Code=26   State=)               Start=159 End=160 Line=18 Sumbol=22
+78: Title=TFLS          Code=27   State={               Start=162 End=163 Line=19 Sumbol=2
+79: Title=TFRS          Code=28   State=}               Start=167 End=168 Line=21 Sumbol=2
+80: Title=TFRS          Code=28   State=}               Start=170 End=171 Line=22 Sumbol=2
+81: Title=TFRS          Code=28   State=}               Start=173 End=174 Line=23 Sumbol=2
+82: Title=TFRS          Code=28   State=}               Start=176 End=177 Line=24 Sumbol=2
+83: Title=_int          Code=33   State=int             Start=179 End=182 Line=25 Sumbol=2
+84: Title=TID           Code=1    State=temp            Start=183 End=187 Line=25 Sumbol=6
+85: Title=TTZpt         Code=22   State=;               Start=187 End=188 Line=25 Sumbol=10
+86: Title=_int          Code=33   State=int             Start=190 End=193 Line=26 Sumbol=2
+87: Title=TID           Code=1    State=s               Start=194 End=195 Line=26 Sumbol=6
+88: Title=TSave         Code=8    State==               Start=196 End=197 Line=26 Sumbol=8
+89: Title=TConstInt     Code=2    State=2               Start=198 End=199 Line=26 Sumbol=10
+90: Title=TDiv          Code=20   State=/               Start=199 End=200 Line=26 Sumbol=11
+91: Title=TID           Code=1    State=f               Start=200 End=201 Line=26 Sumbol=12
+92: Title=TMinus        Code=17   State=-               Start=201 End=202 Line=26 Sumbol=13
+93: Title=TConstInt     Code=2    State=2               Start=202 End=203 Line=26 Sumbol=14
+94: Title=TMult         Code=19   State=*               Start=203 End=204 Line=26 Sumbol=15
+95: Title=TConstInt     Code=2    State=2               Start=204 End=205 Line=26 Sumbol=16
+96: Title=TPlus         Code=15   State=+               Start=205 End=206 Line=26 Sumbol=17
+97: Title=TConstDouble  Code=6    State=1.1             Start=206 End=209 Line=26 Sumbol=18
+98: Title=TMult         Code=19   State=*               Start=209 End=210 Line=26 Sumbol=21
+99: Title=TConstInt     Code=2    State=1               Start=210 End=211 Line=26 Sumbol=22
+100: Title=TPlus         Code=15   State=+               Start=211 End=212 Line=26 Sumbol=23
+101: Title=TConstInt     Code=2    State=2               Start=212 End=213 Line=26 Sumbol=24
+102: Title=TTZpt         Code=22   State=;               Start=213 End=214 Line=26 Sumbol=25
+103: Title=TID           Code=1    State=f               Start=216 End=217 Line=27 Sumbol=2
+104: Title=TSave         Code=8    State==               Start=218 End=219 Line=27 Sumbol=4
+105: Title=TConstInt     Code=2    State=3               Start=220 End=221 Line=27 Sumbol=6
+106: Title=TTZpt         Code=22   State=;               Start=221 End=222 Line=27 Sumbol=7
+107: Title=TFRS          Code=28   State=}               Start=223 End=224 Line=28 Sumbol=1
+108: Title=TEOF          Code=300  State=                Start=223 End=223 Line=28 Sumbol=1
 
 ======================================================

@@ -8,6 +8,13 @@ using Exception = HellLing.Model.Classes.Exception;
 
 namespace HellLing
 {
+    /// <summary>
+    /// Главная программа для языка C++
+    /// Типы: int double
+    /// Операции: Унарные и банарные арифметические, сравнения
+    /// Операторы: Присваивание и for простейшей структуры (цикл по одной переменной с заданным шагом)
+    /// Операнды: Простые переменные, элементы одномерных массивов
+    /// </summary>
     class Program
     {
         static void Main(string[] args)

@@ -19,21 +19,39 @@ namespace HellLing.Model.Classes
         }
         public List<string> GetErrors()
         {
-            return exceptions.Select(x => x.ToString()).ToList();
+            return exceptions.Select(x => x.GetLexem()).ToList();
         }
 
         public void PrintErrorCode()
         {
             string text = Token.Text;
+            List<int> colored = GetErrorMass();
             for (int i = 0; i < text.Count(); i++)
             {
                 Console.ResetColor();
-                if (true)
+                if (colored.Contains(i))
                 {
-
+                    Console.ForegroundColor = ConsoleColor.DarkRed;
                 }
                 Console.Write(text[i]);
             }
+            Console.ResetColor();
+        }
+
+        List<int> GetErrorMass()
+        {
+            List<int> vs = new List<int>();
+            foreach (var item in exceptions)
+            {
+                for (int i = item.Token.Position.Start-1; i < item.Token.Position.End; i++)
+                {
+                    if (!vs.Contains(i))
+                    {
+                        vs.Add(i);
+                    }
+                }
+            }
+            return vs;
         }
     }
 }
