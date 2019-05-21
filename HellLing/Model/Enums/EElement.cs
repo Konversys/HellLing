@@ -14,6 +14,9 @@ namespace HellLing.Model.Enums
         Func,
         Const,
         Base,
-        None
+        None,
+        For,
+        Myltiply,
+        Added
     }
 }

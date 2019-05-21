@@ -46,9 +46,17 @@ namespace HellLing.Model.STree
         {
             return new Node() { Element = EElement.Const, Type = type };
         }
-        public static Node NewNone()
+        public static Node NewFor()
         {
-            return new Node() { Element = EElement.None };
+            return new Node() { Element = EElement.For };
+        }
+        public static Node NewAdded(EType type)
+        {
+            return new Node() { Element = EElement.Added, Type = type };
+        }
+        public static Node NewMultiply(EType type)
+        {
+            return new Node() { Element = EElement.Myltiply, Type = type };
         }
         public static Node NewBase()
         {

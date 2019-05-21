@@ -115,6 +115,10 @@ namespace HellLing.Model.STree
         }
         public bool ContainsFunc(Token token)
         {
+            if (token.State == "print")
+            {
+                return true;
+            }
             Tree current = this;
             while (current != null && !(current.Node.Title == token.State && current.Node.Element == EElement.Func))
             {

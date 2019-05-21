@@ -12,7 +12,7 @@ namespace HellLing.External
         /// </summary>
         /// <param name="path">Путь к файлу</param>
         /// <returns></returns>
-        public static string Read(string path = @"D:\ASTU\7s\МАвТФЯ\HellLing\HellLing\Data\input.txt")
+        public static string Read(string path = @"D:\ASTU\8s\ТЯПиМТ\HellLing\HellLing\Data\input.txt")
         {
             using (StreamReader sr = new StreamReader(path))
             {

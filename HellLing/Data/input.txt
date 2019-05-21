@@ -1,29 +1,10 @@
-int f = '0';
-
-int func(){
-
-int g;
-
-
-}
-
 int main()
 {
-	int i;
-	for(i=i; i < 10; i++)
+	int fact = 5;
+	int result = 1;
+	for (int i = fact; i > 1; i--)
 	{
-	for(i=i; i < 10; i++)
-	{
-	for(i=i; i < 10; i++)
-	{
-	for(i=i; i < 10; i++)
-	{
-	   
+	    result = result * i;
 	}
-	}
-	}
-	}
-	int temp;
-	int s = 2/f-2*2+1.1*1+2;
-	f = 3;
+	print(result);
 }
