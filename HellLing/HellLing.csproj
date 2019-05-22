@@ -56,6 +56,7 @@
     <Compile Include="Model\Enums\Lexem.cs" />
     <Compile Include="Model\Classes\Token.cs" />
     <Compile Include="Model\FC.cs" />
+    <Compile Include="Model\Intertreter\Var.cs" />
     <Compile Include="Model\STree\Node.cs" />
     <Compile Include="Model\STree\Tree.cs" />
     <Compile Include="Program.cs" />

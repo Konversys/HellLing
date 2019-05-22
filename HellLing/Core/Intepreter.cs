@@ -1,4 +1,5 @@
-﻿using HellLing.Model.STree;
+﻿using HellLing.Model.Intertreter;
+using HellLing.Model.STree;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,9 +10,11 @@ namespace HellLing.Core
 {
     class Intepreter
     {
+        static List<Var> Vars;
+
         public static void Run(Tree tree)
         {
-
+            Vars = new List<Var>();
         }
     }
 }

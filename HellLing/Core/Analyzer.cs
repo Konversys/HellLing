@@ -91,11 +91,12 @@ namespace HellLing.Core
         {
             ShiftToken(3);
             FuncName = null;
-            AddFunc(-1);
+            tree = AddFunc(-1);
             ArgDeclar();
             FuncName = null;
             ShiftToken(2);
             MethodBlock();
+            tree = tree.Up;
             ShiftToken();
         }
         static void GlobalVar()
@@ -386,7 +387,12 @@ namespace HellLing.Core
                 }
                 else if (FC.VarAssign2(car))
                 {
-                    VarAssign();
+                    //VarAssign();
+                    if (First(Lexem.TID))
+                    {
+                        ShiftToken(2);
+                        Expression(GetToken(-1).State);
+                    }
                     if (First(Lexem.TTZpt))
                     {
                         ShiftToken();
@@ -437,7 +443,6 @@ namespace HellLing.Core
             {
                 ShiftToken(2);
             }
-            save.Push(tree);
             tree = tree.AddBranch(Node.Create(EElement.For));
             if (First(Lexem._int) || First(Lexem._double))
             {
@@ -446,8 +451,9 @@ namespace HellLing.Core
                 {
                     ShiftToken(-1);
                     VarDeclar();
-                    ShiftToken(-1);
-                    VarAssign();
+                    ShiftToken(1);
+                    //VarAssign();
+                    Expression();
                 }
             }
             else if (FC.VarAssign2(car))
@@ -474,10 +480,26 @@ namespace HellLing.Core
             }
             else if (FC.Inc2(car))
             {
+                if (First(Lexem.TID))
+                {
+                    tree.AddBranch(Node.Create(EElement.None, EPurpose.IncL, GetToken(1).State));
+                }
+                else
+                {
+                    tree.AddBranch(Node.Create(EElement.None, EPurpose.IncF, GetToken(1).State));
+                }
                 Inc();
             }
             else if (FC.Dec2(car))
             {
+                if (First(Lexem.TID))
+                {
+                    tree.AddBranch(Node.Create(EElement.None, EPurpose.DecL, GetToken(1).State));
+                }
+                else
+                {
+                    tree.AddBranch(Node.Create(EElement.None, EPurpose.DecF, GetToken(1).State));
+                }
                 Dec();
             }
             if (First(Lexem.TRS, Lexem.TFLS))
@@ -485,7 +507,7 @@ namespace HellLing.Core
                 ShiftToken(2);
             }
             MethodBlock();
-            tree = save.Pop();
+            tree = tree.Up;
             if (First(Lexem.TFRS))
             {
                 ShiftToken();
@@ -528,13 +550,20 @@ namespace HellLing.Core
             return EType._null;
         }
 
-        static EType Expression()
+        static EType Expression(string state = null)
         {
 
             EType result = EType.None;
             EType type;
             int start = car;
-            tree = tree.AddBranch(Node.Create(EElement.None, EPurpose.Expression, tree.Branches.Last().Node.State));
+            if (state == null)
+            {
+                tree = tree.AddBranch(Node.Create(EElement.None, EPurpose.Expression, tree.Branches.Last().Node.State));
+            }
+            else
+            {
+                tree = tree.AddBranch(Node.Create(EElement.None, EPurpose.Expression, state));
+            }
             do
             {
                 type = Addend();
@@ -577,6 +606,7 @@ namespace HellLing.Core
             }
             else
             {
+                tree = tree.Up;
                 return type;
             }
         }
