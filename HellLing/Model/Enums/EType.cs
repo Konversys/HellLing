@@ -13,10 +13,6 @@ namespace HellLing.Model.Enums
         Double,
         Char,
         Void,
-        Division,
-        Multiply,
-        Add,
-        Sub,
         None
     }
 }

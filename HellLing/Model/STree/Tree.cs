@@ -12,13 +12,11 @@ namespace HellLing.Model.STree
     {
         public Node Node { get; private set; }
         public Tree Up { get; private set; }
-        public Tree Left { get; private set; }
-        public Tree Right { get; private set; }
+        public List<Tree> Branches { get; private set; }
 
-        private Tree(Tree left, Tree right, Tree up, Node node)
+        private Tree(Tree up, Node node)
         {
-            Left = left;
-            Right = right;
+            Branches = new List<Tree>();
             Up = up;
             Node = node;
         }
@@ -31,71 +29,99 @@ namespace HellLing.Model.STree
         /// Левый потомок - сосед
         /// </summary>
         /// <param name="node"></param>
-        public void SetLeft(Node node)
+        public Tree AddBranch(Node node)
         {
-            Left = new Tree(null, null, this, node);
+            Tree tree = new Tree(this, node);
+            Branches.Add(tree);
+            return tree;
         }
         /// <summary>
         /// Правый потомок - следующий уровень вложенности
         /// </summary>
         /// <param name="node"></param>
-        public void SetRight(Node node)
-        {
-            Right = new Tree(null, null, this, node);
-        }
+
+
         public Tree FindUpVar(Token token)
         {
             Tree current = this;
-            while (current != null && !(current.Node.Title == token.State && current.Node.Element == EElement.Var))
+            while (current != null)
             {
+                if (current.Node.Title == token.State && current.Node.Element == EElement.Var)
+                {
+                    return current;
+                }
+                foreach (var branch in current.Branches)
+                {
+                    if (branch != null && branch.Node.Title == token.State && branch.Node.Element == EElement.Var)
+                    {
+                        return branch;
+                    }
+                }
                 current = current.Up;
             }
-            return current;
+            return null;
         }
+       
         public Tree FindUpArray(Token token)
         {
             Tree current = this;
-            while (current != null && !(current.Node.Title == token.State && current.Node.Element == EElement.Array))
+            while (current != null)
             {
+                if (current.Node.Title == token.State && current.Node.Element == EElement.Array)
+                {
+                    return current;
+                }
+                foreach (var branch in current.Branches)
+                {
+                    if (branch != null && branch.Node.Title == token.State && branch.Node.Element == EElement.Array)
+                    {
+                        return branch;
+                    }
+                }
                 current = current.Up;
             }
-            return current;
+            return null;
         }
         public Tree FindUpFunc(Token token)
         {
             Tree current = this;
-            while (current != null && !(current.Node.Title == token.State && current.Node.Element == EElement.Func))
+            while (current != null)
             {
-                current = current.Right;
-            }
-            return current;
-        }
-        public Tree FindUpNone(Token token)
-        {
-            Tree current = this;
-            while (current != null && !(current.Node.Title == token.State && current.Node.Element == EElement.None))
-            {
+                if (current.Node.Title == token.State && current.Node.Element == EElement.Func)
+                {
+                    return current;
+                }
+                foreach (var branch in current.Branches)
+                {
+                    if (branch != null && branch.Node.Title == token.State && branch.Node.Element == EElement.Func)
+                    {
+                        return branch;
+                    }
+                }
                 current = current.Up;
             }
-            return current;
+            return null;
         }
-        public Tree FindUpNull(Token token)
-        {
-            Tree current = this;
-            while (current != null && !(current.Node.Title == token.State && current.Node.Element == EElement._null))
-            {
-                current = current.Up;
-            }
-            return current;
-        }
+       
         public Tree FindUpBase(Token token)
         {
             Tree current = this;
-            while (current != null && !(current.Node.Title == token.State && current.Node.Element == EElement.Base))
+            while (current != null)
             {
+                if (current.Node.Title == token.State && current.Node.Element == EElement.Base)
+                {
+                    return current;
+                }
+                foreach (var branch in current.Branches)
+                {
+                    if (branch != null && branch.Node.Title == token.State && branch.Node.Element == EElement.Base)
+                    {
+                        return branch;
+                    }
+                }
                 current = current.Up;
             }
-            return current;
+            return null;
         }
         public bool ContainsVar(Token token)
         {
@@ -130,9 +156,9 @@ namespace HellLing.Model.STree
             }
             return true;
         }
-        public bool ContainsNone(Token token)
+        public bool ContainsBase(Token token)
         {
-            if (FindUpNone(token) == null)
+            if (FindUpBase(token) == null)
             {
                 return false;
             }
@@ -141,60 +167,40 @@ namespace HellLing.Model.STree
 
         public EType GetTypeVar(Token token)
         {
-            Tree current = this;
-            while (current != null && !(current.Node.Title == token.State && current.Node.Element == EElement.Var))
-            {
-                current = current.Up;
-            }
-            if (current == null)
+            Tree tree = FindUpVar(token);
+            if (tree == null)
             {
                 return EType._null;
             }
-            return current.Node.Type;
+            return tree.Node.Type;
         }
         public EType GetTypeArray(Token token)
         {
-            Tree current = this;
-            while (current != null && !(current.Node.Title == token.State && current.Node.Element == EElement.Array))
-            {
-                current = current.Up;
-            }
-            if (current == null)
+            Tree tree = FindUpArray(token);
+            if (tree == null)
             {
                 return EType._null;
             }
-            return current.Node.Type;
+            return tree.Node.Type;
         }
         public EType GetTypeFunc(Token token)
         {
-            Tree current = this;
-            while (current != null && !(current.Node.Element == EElement.Func))
-            {
-                current = current.Up;
-            }
-            while (current != null && !(current.Node.Title == token.State && current.Node.Element == EElement.Func))
-            {
-                current = current.Right;
-            }
-            if (current == null)
+            Tree tree = FindUpFunc(token);
+            if (tree == null)
             {
                 return EType._null;
             }
-            return current.Node.Type;
+            return tree.Node.Type;
         }
 
-        public EType GetThisFunc(Token token)
+        public EType GetTypeBase(Token token)
         {
-            Tree current = this;
-            while (current != null && !(current.Node.Element == EElement.Func))
-            {
-                current = current.Up;
-            }
-            if (current == null)
+            Tree tree = FindUpBase(token);
+            if (tree == null)
             {
                 return EType._null;
             }
-            return current.Node.Type;
+            return tree.Node.Type;
         }
     }
 }

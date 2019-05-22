@@ -12,7 +12,7 @@ namespace HellLing.Model.STree
         /// <summary>
         /// Var, Array, Func, Const
         /// </summary>
-        public string Title { get; private set; }
+        public string State { get; private set; }
         /// <summary>
         /// Var, Array, Func, Const
         /// </summary>
@@ -25,42 +25,39 @@ namespace HellLing.Model.STree
         /// Array
         /// </summary>
         public int Length { get; private set; }
+
+        public static Node NewNode(string state, EElement element, EType type = EType.None, int length = 0)
+        {
+            return new Node() { Element = element, Type = type, State = state, Length = length};
+        }
+    }
+}
+
+/*
         /// <summary>
         /// Название функции для аргумента?
         /// </summary>
         public string Func { get; private set; }
 
-        public static Node NewVar(string title, EType type, string func = null)
+        public static Node NewVar(string state, EType type, string func = null)
         {
-            return new Node() { Element = EElement.Var, Type = type, Title = title, Func = func };
+            return new Node() { Element = EElement.Var, Type = type, State = state, Func = func };
         }
-        public static Node NewArray(string title, EType type, int length, string func = null)
+        public static Node NewArray(string state, EType type, int length, string func = null)
         {
-            return new Node() { Element = EElement.Array, Type = type, Title = title, Length = length, Func = func };
+            return new Node() { Element = EElement.Array, Type = type, State = state, Length = length, Func = func };
         }
-        public static Node NewFunction(string title, EType returnType)
+        public static Node NewFunction(string state, EType returnType)
         {
-            return new Node() { Element = EElement.Func, Type = returnType, Title = title };
+            return new Node() { Element = EElement.Func, Type = returnType, State = state };
         }
         public static Node NewConst(EType type)
         {
             return new Node() { Element = EElement.Const, Type = type };
         }
-        public static Node NewFor()
+
+        public static Node NewOperator(string state, EOperator oper)
         {
-            return new Node() { Element = EElement.For };
+            return new Node() { Element = EElement., };
         }
-        public static Node NewAdded(EType type)
-        {
-            return new Node() { Element = EElement.Added, Type = type };
-        }
-        public static Node NewMultiply(EType type)
-        {
-            return new Node() { Element = EElement.Myltiply, Type = type };
-        }
-        public static Node NewBase()
-        {
-            return new Node() { Element = EElement.None };
-        }
-    }
-}
+ */

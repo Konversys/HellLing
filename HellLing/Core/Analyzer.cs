@@ -92,12 +92,10 @@ namespace HellLing.Core
             ShiftToken(3);
             FuncName = null;
             AddFunc(-1);
-            save.Push(tree);
             ArgDeclar();
             FuncName = null;
             ShiftToken(2);
             MethodBlock();
-            tree = save.Pop();
             ShiftToken();
         }
         static void GlobalVar()
@@ -566,14 +564,10 @@ namespace HellLing.Core
                 if (First(Lexem.TPlus))
                 {
                     result = CastPlusMinusType(type, result);
-                    tree.SetRight(Node.NewMultiply(EType.Add));
-                    tree = tree.Left;
                 }
                 else if (First(Lexem.TMinus))
                 {
                     result = CastPlusMinusType(type, result);
-                    tree.SetRight(Node.NewMultiply(EType.Sub));
-                    tree = tree.Left;
                 }
             } while ((First(Lexem.TPlus) || First(Lexem.TMinus)) && ShiftToken());
             if (result == EType.None)
@@ -593,14 +587,10 @@ namespace HellLing.Core
                 if (First(Lexem.TMult))
                 {
                     result = CastMultType(type, result);
-                    tree.SetRight(Node.NewMultiply(EType.Multiply));
-                    tree = tree.Left;
                 }
                 else if (First(Lexem.TDiv))
                 {
                     result = CastDivType(type, result);
-                    tree.SetRight(Node.NewMultiply(EType.Division));
-                    tree = tree.Left;
                 }
             } while ((First(Lexem.TMult) || First(Lexem.TDiv)) && ShiftToken());
             if (result == EType.None)
