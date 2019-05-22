@@ -14,21 +14,31 @@ namespace HellLing.Model.STree
         /// </summary>
         public string State { get; private set; }
         /// <summary>
-        /// Var, Array, Func, Const
-        /// </summary>
-        public EType Type { get; private set; }
-        /// <summary>
         /// Var, Array, Const, Func, None
         /// </summary>
         public EElement Element { get; private set; }
+        /// <summary>
+        /// Var, Array, Func, Const
+        /// </summary>
+        public EType Type { get; private set; }
         /// <summary>
         /// Array
         /// </summary>
         public int Length { get; private set; }
 
-        public static Node NewNode(string state, EElement element, EType type = EType.None, int length = 0)
+        public Node() { }
+
+        public Node(string state, EElement element, EType type, int length)
         {
-            return new Node() { Element = element, Type = type, State = state, Length = length};
+            State = state;
+            Element = element;
+            Type = type;
+            Length = length;
+        }
+
+        public static Node Create(EElement element, string state = null, EType type = EType.None, int length = 0)
+        {
+            return new Node(state, element, type, length);
         }
     }
 }

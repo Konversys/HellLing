@@ -742,18 +742,18 @@ namespace HellLing.Core
                 switch (GetToken(shift - 1).Lexem)
                 {
                     case Lexem._int:
-                        tree.SetRight(Node.NewFunction(token.State, EType.Int));
+                        tree.AddBranch(Node.Create(EElement.Func, token.State, EType.Int));
                         break;
                     case Lexem._double:
-                        tree.SetRight(Node.NewFunction(token.State, EType.Double));
+                        tree.AddBranch(Node.Create(EElement.Func, token.State, EType.Double));
                         break;
                     case Lexem._void:
-                        tree.SetRight(Node.NewFunction(token.State, EType.Void));
+                        tree.AddBranch(Node.Create(EElement.Func, token.State, EType.Void));
                         break;
                     default:
                         return false;
                 }
-                tree = tree.Right;
+                tree = tree.;
                 return true;
             }
         }
