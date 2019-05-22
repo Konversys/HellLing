@@ -2,28 +2,11 @@
 {
     enum EElement
     {
-        _null,
-        None,
-
         Base,
-        FVar,
-        FArray,
+        None,
         Var,
         Array,
         Func,
-
-
-        Declare,
-        Assign,
-        Compare,
-
-        Add,
-        Sub,
-        IncF,
-        DecF,
-        IncL,
-        DecL,
-        Myl,
-        Div,
+        For,
     }
 }

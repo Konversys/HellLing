@@ -1,0 +1,19 @@
+﻿int main()
+{
+	
+}
+
+double a()
+{
+
+}
+
+int b()
+{
+	
+}
+
+double c()
+{
+
+}

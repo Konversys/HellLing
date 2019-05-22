@@ -60,7 +60,7 @@ namespace HellLing.Core
             Tokens = tokens;
             car = 0;
             errors = new Errors();
-            tree = new Tree("program");
+            tree = new Tree("base");
             save = new Stack<Tree>();
             FC.SetData(tokens);
             Program();
@@ -181,7 +181,7 @@ namespace HellLing.Core
         {
             if (FC.VarAssign2(car))
             {
-                if (!tree.ContainsVar(GetToken(1)))
+                if (!tree.Contains(GetToken(1), EElement.Var))
                 {
                     errors.Add(GetToken(1), car, $"{System.Reflection.MethodBase.GetCurrentMethod().Name}: Переменная не объявлена");
                 }
@@ -199,7 +199,7 @@ namespace HellLing.Core
         {
             if (FC.ArrAssign5(car))
             {
-                if (!tree.ContainsArray(GetToken(1)))
+                if (!tree.Contains(GetToken(1), EElement.Array))
                 {
                     errors.Add(GetToken(1), car, $"{System.Reflection.MethodBase.GetCurrentMethod().Name}: Массив не объявлен");
                 }
@@ -404,8 +404,8 @@ namespace HellLing.Core
         {
             if (FC.MethodCall2(car))
             {
-                EType type = tree.GetTypeFunc(GetToken(1));
-                if (!tree.ContainsFunc(GetToken(1)))
+                EType type = tree.GetType(GetToken(1), EElement.Func);
+                if (!tree.Contains(GetToken(1), EElement.Func))
                 {
                     errors.Add(GetToken(1), car, $"{System.Reflection.MethodBase.GetCurrentMethod().Name}: Функция не объявлена");
                 }
@@ -437,8 +437,8 @@ namespace HellLing.Core
             {
                 ShiftToken(2);
             }
-            AddFor();
             save.Push(tree);
+            tree = tree.AddBranch(Node.Create(EElement.For));
             if (First(Lexem._int) || First(Lexem._double))
             {
                 ShiftToken();
@@ -499,12 +499,12 @@ namespace HellLing.Core
                 if (First(Lexem.TID))
                 {
                     ShiftToken(2);
-                    return tree.GetTypeVar(GetToken(-1));
+                    return tree.GetType(GetToken(-1), EElement.Var);
                 }
                 else
                 {
                     ShiftToken(2);
-                    return tree.GetTypeVar(GetToken());
+                    return tree.GetType(GetToken(), EElement.Var);
                 }
             }
             return EType._null;
@@ -517,12 +517,12 @@ namespace HellLing.Core
                 if (First(Lexem.TID))
                 {
                     ShiftToken(2);
-                    return tree.GetTypeVar(GetToken(-1));
+                    return tree.GetType(GetToken(-1), EElement.Var);
                 }
                 else
                 {
                     ShiftToken(2);
-                    return tree.GetTypeVar(GetToken());
+                    return tree.GetType(GetToken(), EElement.Var);
                 }
             }
             return EType._null;
@@ -530,22 +530,49 @@ namespace HellLing.Core
 
         static EType Expression()
         {
+
             EType result = EType.None;
             EType type;
             int start = car;
+            tree = tree.AddBranch(Node.Create(EElement.None, EPurpose.Expression, tree.Branches.Last().Node.State));
             do
             {
                 type = Addend();
                 result = CastPlusMinusType(type, result);
+                switch (GetToken(1).Lexem)
+                {
+                    case Lexem.TGE:
+                        tree.AddBranch(Node.Create(EElement.None, EPurpose.TGE));
+                        break;
+                    case Lexem.TGT:
+                        tree.AddBranch(Node.Create(EElement.None, EPurpose.TGT));
+                        break;
+                    case Lexem.TLE:
+                        tree.AddBranch(Node.Create(EElement.None, EPurpose.TLE));
+                        break;
+                    case Lexem.TLT:
+                        tree.AddBranch(Node.Create(EElement.None, EPurpose.TLT));
+                        break;
+                    case Lexem.TNQ:
+                        tree.AddBranch(Node.Create(EElement.None, EPurpose.TNQ));
+                        break;
+                    case Lexem.TEQ:
+                        tree.AddBranch(Node.Create(EElement.None, EPurpose.TEQ));
+                        break;
+                    default:
+                        break;
+                }
             } while ((First(Lexem.TGE) || First(Lexem.TGT) || First(Lexem.TLE) || First(Lexem.TLT) || First(Lexem.TNQ) || First(Lexem.TEQ))
                 && ShiftToken());
             if ((result == EType.None && type == EType._null) || (result == EType._null))
             {
                 errors.Add(new Token(GetToken().Lexem, new Position(start + 1, car + 1), GetCarText(start + 1, car + 1), GetToken().Code), car, $"{System.Reflection.MethodBase.GetCurrentMethod().Name}: Невозможно привести типы в данном выражении");
+                tree = tree.Up;
                 return EType._null;
             }
             if (result != EType.None)
             {
+                tree = tree.Up;
                 return result;
             }
             else
@@ -564,10 +591,12 @@ namespace HellLing.Core
                 if (First(Lexem.TPlus))
                 {
                     result = CastPlusMinusType(type, result);
+                    tree.AddBranch(Node.Create(EElement.None, EPurpose.Add));
                 }
                 else if (First(Lexem.TMinus))
                 {
                     result = CastPlusMinusType(type, result);
+                    tree.AddBranch(Node.Create(EElement.None, EPurpose.Sub));
                 }
             } while ((First(Lexem.TPlus) || First(Lexem.TMinus)) && ShiftToken());
             if (result == EType.None)
@@ -587,10 +616,12 @@ namespace HellLing.Core
                 if (First(Lexem.TMult))
                 {
                     result = CastMultType(type, result);
+                    tree.AddBranch(Node.Create(EElement.None, EPurpose.Mul));
                 }
                 else if (First(Lexem.TDiv))
                 {
                     result = CastDivType(type, result);
+                    tree.AddBranch(Node.Create(EElement.None, EPurpose.Div));
                 }
             } while ((First(Lexem.TMult) || First(Lexem.TDiv)) && ShiftToken());
             if (result == EType.None)
@@ -610,7 +641,7 @@ namespace HellLing.Core
             else if (First(Lexem.TID, Lexem.TCLS))
             {
                 ShiftToken();
-                EType type = tree.GetTypeArray(GetToken());
+                EType type = tree.GetType(GetToken(), EElement.Array);
                 ShiftToken();
                 if (First(Lexem.TConstInt) || First(Lexem.TID))
                 {
@@ -634,20 +665,38 @@ namespace HellLing.Core
             }
             else if (FC.Inc2(car))
             {
+                if (First(Lexem.TID))
+                {
+                    tree.AddBranch(Node.Create(EElement.Var, EPurpose.IncL, GetToken(1).State));
+                }
+                else
+                {
+                    tree.AddBranch(Node.Create(EElement.Var, EPurpose.IncF, GetToken(2).State));
+                }
                 return Inc();
             }
-            else if (FC.Inc2(car))
+            else if (FC.Dec2(car))
             {
+                if (First(Lexem.TID))
+                {
+                    tree.AddBranch(Node.Create(EElement.Var, EPurpose.DecL, GetToken(1).State));
+                }
+                else
+                {
+                    tree.AddBranch(Node.Create(EElement.Var, EPurpose.DecF, GetToken(2).State));
+                }
                 return Dec();
             }
             else if (First(Lexem.TConstInt))
             {
                 ShiftToken();
+                tree.AddBranch(Node.Create(EElement.Var, EPurpose.None, GetToken().State, EType.Int));
                 return EType.Int;
             }
             else if (First(Lexem.TConstDouble))
             {
                 ShiftToken();
+                tree.AddBranch(Node.Create(EElement.Var, EPurpose.None, GetToken().State, EType.Double));
                 return EType.Double;
             }
             else if (First(Lexem.TConstChar))
@@ -658,12 +707,13 @@ namespace HellLing.Core
             else if (First(Lexem.TID))
             {
                 ShiftToken();
-                if (!tree.ContainsVar(GetToken(0)))
+                if (!tree.Contains(GetToken(0), EElement.Var))
                 {
                     errors.Add(GetToken(), car, $"{System.Reflection.MethodBase.GetCurrentMethod().Name}: Переменная не объявлена");
                     return EType._null;
                 }
-                return tree.GetTypeVar(GetToken());
+                tree.AddBranch(Node.Create(EElement.Var, EPurpose.None, GetToken().State));
+                return tree.GetType(GetToken(), EElement.Var);
             }
             else if (FC.MethodCall2(car))
             {
@@ -721,20 +771,14 @@ namespace HellLing.Core
         #endregion
 
         #region Tree operation
-        public static bool AddFor()
-        {
-            tree.SetRight(Node.NewFor());
-            tree = tree.Right;
-            return true;
-        }
 
-        public static bool AddFunc(int shift = 0)
+        public static Tree AddFunc(int shift = 0)
         {
             Token token = GetToken(shift);
-            if (tree.FindUpFunc(token) != null)
+            if (tree.FindUp(token, EElement.Func) != null)
             {
                 errors.Add(token, car, $"{MethodInfo.GetCurrentMethod().Name} - Функция {token.State} уже существует в этой области видимости");
-                return false;
+                return null;
             }
             else
             {
@@ -742,25 +786,20 @@ namespace HellLing.Core
                 switch (GetToken(shift - 1).Lexem)
                 {
                     case Lexem._int:
-                        tree.AddBranch(Node.Create(EElement.Func, token.State, EType.Int));
-                        break;
+                        return tree.AddBranch(Node.Create(EElement.Func, EPurpose.None, token.State, EType.Int));
                     case Lexem._double:
-                        tree.AddBranch(Node.Create(EElement.Func, token.State, EType.Double));
-                        break;
+                        return tree.AddBranch(Node.Create(EElement.Func, EPurpose.None, token.State, EType.Double));
                     case Lexem._void:
-                        tree.AddBranch(Node.Create(EElement.Func, token.State, EType.Void));
-                        break;
+                        return tree.AddBranch(Node.Create(EElement.Func, EPurpose.None, token.State, EType.Void));
                     default:
-                        return false;
+                        return null;
                 }
-                tree = tree.;
-                return true;
             }
         }
         public static bool AddVar(int shift = 0, bool isFunc = false)
         {
             Token token = GetToken(shift);
-            if (tree.FindUpVar(token) != null || tree.FindUpArray(token) != null)
+            if (tree.FindUp(token, EElement.Var) != null || tree.FindUp(token, EElement.Array) != null)
             {
                 errors.Add(token, car, $"{MethodInfo.GetCurrentMethod().Name} - Переменная {token.State} уже существует в этой области видимости");
                 return false;
@@ -770,29 +809,14 @@ namespace HellLing.Core
                 switch (GetToken(shift - 1).Lexem)
                 {
                     case Lexem._int:
-                        if (isFunc)
-                        {
-                            tree.SetLeft(Node.NewVar(token.State, EType.Int, FuncName));
-                        }
-                        else
-                        {
-                            tree.SetLeft(Node.NewVar(token.State, EType.Int));
-                        }
+                        tree.AddBranch(Node.Create(EElement.Var, EPurpose.Declare, token.State, EType.Int, null, isFunc));
                         break;
                     case Lexem._double:
-                        if (isFunc)
-                        {
-                            tree.SetLeft(Node.NewVar(token.State, EType.Double, FuncName));
-                        }
-                        else
-                        {
-                            tree.SetLeft(Node.NewVar(token.State, EType.Double));
-                        }
+                        tree.AddBranch(Node.Create(EElement.Var, EPurpose.Declare, token.State, EType.Double, null, isFunc));
                         break;
                     default:
                         return false;
                 }
-                tree = tree.Left;
                 return true;
             }
         }
@@ -808,7 +832,7 @@ namespace HellLing.Core
             {
                 lenght = 100;
             }
-            if (tree.FindUpVar(token) != null || tree.FindUpArray(token) != null)
+            if (tree.FindUp(token, EElement.Var) != null || tree.FindUp(token, EElement.Array) != null)
             {
                 errors.Add(token, car, $"{MethodInfo.GetCurrentMethod().Name} - Массив {token.State} уже существует в этой области видимости");
                 return false;
@@ -818,29 +842,14 @@ namespace HellLing.Core
                 switch (GetToken(shift - 1).Lexem)
                 {
                     case Lexem._int:
-                        if (isFunc)
-                        {
-                            tree.SetLeft(Node.NewArray(token.State, EType.Int, lenght, FuncName));
-                        }
-                        else
-                        {
-                            tree.SetLeft(Node.NewArray(token.State, EType.Int, lenght));
-                        }
+                        tree.AddBranch(Node.Create(EElement.Array, EPurpose.Declare, token.State, EType.Int, null, isFunc, lenght));
                         break;
                     case Lexem._double:
-                        if (isFunc)
-                        {
-                            tree.SetLeft(Node.NewArray(token.State, EType.Double, lenght, FuncName));
-                        }
-                        else
-                        {
-                            tree.SetLeft(Node.NewArray(token.State, EType.Double, lenght));
-                        }
+                        tree.AddBranch(Node.Create(EElement.Array, EPurpose.Declare, token.State, EType.Double, null, isFunc, lenght));
                         break;
                     default:
                         return false;
                 }
-                tree = tree.Left;
                 return true;
             }
         }

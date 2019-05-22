@@ -51,6 +51,7 @@
     <Compile Include="Model\Classes\Exception.cs" />
     <Compile Include="Model\Classes\Position.cs" />
     <Compile Include="Model\Enums\EElement.cs" />
+    <Compile Include="Model\Enums\EPurpose.cs" />
     <Compile Include="Model\Enums\EType.cs" />
     <Compile Include="Model\Enums\Lexem.cs" />
     <Compile Include="Model\Classes\Token.cs" />
@@ -67,6 +68,8 @@
   <ItemGroup>
     <Content Include="Data\input.txt" />
     <Content Include="Data\output.txt" />
+    <Content Include="Data\Tests\DeclareVarSimpleMethods.txt" />
+    <Content Include="Data\Tests\VoidMethods.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -44,9 +44,17 @@ namespace HellLing.Model
         public static bool VarDeclar2(int car)
         {
             Car = car;
-            if ((First(Lexem._int) || First(Lexem._double)) && FTok(Lexem.TID, 2))
+            if (FTok(Lexem.TID, 2))
             {
-                return true;
+                if (First(Lexem._int))
+                {
+                    
+                    return true;
+                }
+                if (First(Lexem._double))
+                {
+                    return true;
+                }
             }
             return false;
         }

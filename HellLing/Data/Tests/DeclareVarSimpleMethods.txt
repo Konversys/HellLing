@@ -1,5 +1,4 @@
-int a;
-double b = 5 + 1 - a;
+﻿int a;
 
 int main()
 {

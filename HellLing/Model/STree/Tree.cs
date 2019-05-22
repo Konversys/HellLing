@@ -24,6 +24,7 @@ namespace HellLing.Model.STree
         {
             Node = Node.Create(EElement.Base);
         }
+
         /// <summary>
         /// Левый потомок - сосед
         /// </summary>
@@ -31,6 +32,10 @@ namespace HellLing.Model.STree
         public Tree AddBranch(Node node)
         {
             Tree tree = new Tree(this, node);
+            if (Branches == null)
+            {
+                Branches = new List<Tree>();
+            }
             Branches.Add(tree);
             return tree;
         }
@@ -47,6 +52,10 @@ namespace HellLing.Model.STree
                 if (current.Node.State == token.State && current.Node.Element == element)
                 {
                     return current;
+                }
+                if (current.Branches == null)
+                {
+                    return null;
                 }
                 foreach (var branch in current.Branches)
                 {

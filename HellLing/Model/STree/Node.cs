@@ -10,6 +10,10 @@ namespace HellLing.Model.STree
     class Node
     {
         /// <summary>
+        /// Значение
+        /// </summary>
+        public string Value { get; private set; }
+        /// <summary>
         /// Var, Array, Func, Const
         /// </summary>
         public string State { get; private set; }
@@ -21,24 +25,32 @@ namespace HellLing.Model.STree
         /// Var, Array, Func, Const
         /// </summary>
         public EType Type { get; private set; }
+        public EPurpose Purpose { get; private set; }
         /// <summary>
         /// Array
         /// </summary>
         public int Length { get; private set; }
+        /// <summary>
+        /// Является ли нода аргументом функции
+        /// </summary>
+        public bool IsArg { get; private set; }
 
         public Node() { }
 
-        public Node(string state, EElement element, EType type, int length)
+        public Node(string state, EElement element, EPurpose purpose, EType type, int length, bool isArg, string value)
         {
             State = state;
             Element = element;
             Type = type;
             Length = length;
+            IsArg = isArg;
+            Purpose = purpose;
+            Value = value;
         }
 
-        public static Node Create(EElement element, string state = null, EType type = EType.None, int length = 0)
+        public static Node Create(EElement element, EPurpose purpose = EPurpose.None, string state = null, EType type = EType.None, string value = null, bool isArg = false, int length = 0)
         {
-            return new Node(state, element, type, length);
+            return new Node(state, element, purpose, type, length, isArg, value);
         }
     }
 }
