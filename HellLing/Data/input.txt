@@ -1,7 +1,7 @@
 int fibResult;
 int factResult;
 
-void Fibonachi(int val)
+void fibonachi(int val)
 {
     int fibN2 = 0;
     int fibN1 = 1;
@@ -17,7 +17,7 @@ void main()
 {
     int fib = 6;
     factResult = 1;
-    Fibonachi(fib);
+    fibonachi(fib);
     for (int i = fibResult; i > 1; i--)
     {
         factResult = factResult * i;

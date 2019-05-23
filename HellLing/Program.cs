@@ -17,6 +17,7 @@ namespace HellLing
     /// </summary>
     class Program
     {
+        const string MAIN = "main";
         static void Main(string[] args)
         {
             string text = FileControl.Read();
@@ -25,7 +26,7 @@ namespace HellLing
             Errors errors = Analyzer.Start(tokens);
             Console.WriteLine(GetStringAnalyzer(errors));
             Tree tree = Analyzer.tree;
-            Intepreter.Run(tree);
+            Intepreter.Run(tree, MAIN);
             errors.PrintErrorCode(); 
             Console.ReadKey();
         }
