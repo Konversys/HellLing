@@ -415,6 +415,7 @@ namespace HellLing.Core
                 {
                     errors.Add(GetToken(1), car, $"{System.Reflection.MethodBase.GetCurrentMethod().Name}: Функция не объявлена");
                 }
+                tree = tree.AddBranch(Node.Create(EElement.Func, EPurpose.Call, GetToken(1).State));
                 ShiftToken(2);
                 do
                 {
@@ -422,8 +423,9 @@ namespace HellLing.Core
                     {
                         break;
                     }
-                    Expression();
+                    Expression(GetToken(1).State);
                 } while (First(Lexem.TZpt) && ShiftToken());
+                tree = tree.Up;
                 if (First(Lexem.TRS))
                 {
                     ShiftToken();

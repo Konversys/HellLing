@@ -25,6 +25,7 @@ namespace HellLing
             Errors errors = Analyzer.Start(tokens);
             Console.WriteLine(GetStringAnalyzer(errors));
             Tree tree = Analyzer.tree;
+            Intepreter.Run(tree);
             errors.PrintErrorCode(); 
             Console.ReadKey();
         }

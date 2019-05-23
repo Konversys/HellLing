@@ -10,6 +10,7 @@ namespace HellLing.Model.Enums
     {
         None,
         Declare,
+        Call,
         Expression,
         Add,
         Sub,

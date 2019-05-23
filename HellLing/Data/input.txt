@@ -1,10 +1,26 @@
-int result = 1;
+int fibResult;
+int factResult;
 
-int main()
+void Fibonachi(int val)
 {
-	int fact = 5;
-	for(int i = fact; i > 1; i--)
-	{
-		result = result * i; 
-	}
+    int fibN2 = 0;
+    int fibN1 = 1;
+    for (int i = 1; i < val; i++)
+    {
+        fibResult = fibN1 + fibN2;
+        fibN2 = fibN1;
+        fibN1 = fibResult;
+    }
+}
+
+void main()
+{
+    int fib = 6;
+    factResult = 1;
+    Fibonachi(fib);
+    for (int i = fibResult; i > 1; i--)
+    {
+        factResult = factResult * i;
+    }
+    print(factResult);
 }
