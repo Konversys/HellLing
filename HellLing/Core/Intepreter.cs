@@ -51,6 +51,11 @@ namespace HellLing.Core
 
         static void CallFunc(string func)
         {
+            if (func == "print")
+            {
+                CallXPrint();
+                return;
+            }
             List<Var> localVars = new List<Var>();
             LocalVarsStack.Push(localVars);
             Calls.Push(func);
@@ -94,11 +99,19 @@ namespace HellLing.Core
             LocalVarsStack.Pop();
         }
 
+        private static void CallXPrint()
+        {
+            while (Args.Count() > 0)
+            {
+                Console.WriteLine("STOOPED INTERPRETER SAY: " + Args.Pop());
+            }
+        }
+
         static void CallFor(Tree tree)
         {
             List<Var> localVars = new List<Var>();
             LocalVarsStack.Push(localVars);
-            Calls.Push("For");;
+            Calls.Push("For");
             foreach (var branch in tree.Branches.Take(2))
             {
                 switch (branch.Node.Purpose)
@@ -131,10 +144,15 @@ namespace HellLing.Core
             Tree expression = tree.Branches[2];
             Var expL = iterator;
             EPurpose sign = expression.Branches[1].Node.Purpose;
-            Var expR = GetVar(expression.Branches[2].Node.State);
-            Var fibN2 = GetVar("fibN2");
-            Var fibN1 = GetVar("fibN1");
-            Var fibResult = GetVar("fibResult");
+            Var expR;
+            if (expression.Branches[2].Node.Type == EType.None)
+            {
+                expR = GetVar(expression.Branches[2].Node.State);
+            }
+            else
+            {
+                expR = new Var(expression.Branches[2].Node.Type, null, expression.Branches[2].Node.State);
+            }
             Node procedure = tree.Branches[3].Node;
             while (CompareBool(expL.Value, sign, expR.Value))
             {
