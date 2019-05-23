@@ -22,9 +22,10 @@ namespace HellLing.Model.Intertreter
             IsArg = isArg;
         }
 
-        public void Assign(string newValue)
+        public string Assign(string newValue)
         {
             Value = newValue;
+            return Value;
         }
      }
 }
